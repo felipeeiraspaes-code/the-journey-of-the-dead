@@ -101,7 +101,44 @@ button {
     background: #555;
     color: white;
 }
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+.overlay-box {
+    width: 90%;
+    max-width: 800px;
+
+    background: #222;
+    padding: 40px;
+    border-radius: 12px;
+
+    text-align: center;
+}
+
+.overlay-box h2 {
+    margin-top: 0;
+}
+
+.overlay-button {
+    margin-top: 25px;
+    padding: 14px 30px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+
+    background: #8b0000;
+    color: white;
+    cursor: pointer;
+}
 .hidden {
     display: none;
 }
@@ -218,25 +255,6 @@ Thirst
     class="message hidden">
 </div>
 
-<div id="combatResultBox" class="message hidden"></div>
-
-<button
-    id="combatContinue"
-    class="hidden"
-    onclick="showGains()">
-    Continue
-</button>
-
-<div id="gainResultBox" class="message hidden"></div>
-
-<button
-    id="gainContinue"
-    class="hidden"
-    onclick="finishEncounter()">
-    Continue
-</button>
-
-
 <div class="buttons">
 
 <button
@@ -292,7 +310,11 @@ let player = {
     encounter: 1
 
 };
+let overlayStep = 0;
 
+let combatHTML = "";
+
+let gainHTML = "";
 
 /* =====================================================
    TEMPORARY ENCOUNTER DATABASE
@@ -1553,8 +1575,20 @@ function fight() {
     `;
 
 
-    combatBox.classList.remove("hidden");
-
+        combatHTML =
+        combatBox.innerHTML;
+    
+    document
+        .getElementById("overlay")
+        .classList
+        .remove("hidden");
+    
+    document
+        .getElementById("overlayText")
+        .innerHTML =
+        combatHTML;
+    
+    overlayStep = 1;
 
     /*
        IMPORTANT:
@@ -1665,53 +1699,15 @@ function fight() {
 
     `;
 
-    window.pendingGainHTML = gainBox.innerHTML;
-    
-    document
-        .getElementById("combatContinue")
-        .classList
-        .remove("hidden");
+    gainHTML =
+        gainBox.innerHTML;
     
     updateScreen();
     
     return;
 }
-function showGains() {
-
-    document
-        .getElementById("combatContinue")
-        .classList
-        .add("hidden");
-
-    document
-        .getElementById("gainResultBox")
-        .classList
-        .remove("hidden");
-
-    document
-        .getElementById("gainContinue")
-        .classList
-        .remove("hidden");
 }
-function finishEncounter() {
 
-    document
-        .getElementById("gainContinue")
-        .classList
-        .add("hidden");
-
-    document
-        .getElementById("combatResultBox")
-        .classList
-        .add("hidden");
-
-    document
-        .getElementById("gainResultBox")
-        .classList
-        .add("hidden");
-
-    nextTurn();
-}
 function formatResource(value) {
 
     if (value > 0) {
@@ -1762,6 +1758,34 @@ function run() {
 
     nextTurn();
 }
+
+function overlayContinue() {
+
+    if (overlayStep === 1) {
+
+        document
+            .getElementById("overlayText")
+            .innerHTML =
+            gainHTML;
+
+        overlayStep = 2;
+
+        return;
+    }
+
+    if (overlayStep === 2) {
+
+        document
+            .getElementById("overlay")
+            .classList
+            .add("hidden");
+
+        overlayStep = 0;
+
+        nextTurn();
+    }
+}
+
 
 
 /* =====================================================
@@ -2102,6 +2126,22 @@ document
     time;
 }
 </script>
+<div
+    id="overlay"
+    class="overlay hidden">
 
+    <div class="overlay-box">
+
+        <div id="overlayText"></div>
+
+        <button
+            class="overlay-button"
+            onclick="overlayContinue()">
+            CONTINUE
+        </button>
+
+    </div>
+
+</div>
 </body>
 </html>
