@@ -1,1 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>The Journey of the Dead</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            background: #111;
+            color: #eee;
+            font-family: Arial, sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            min-height: 100vh;
+        }
+
+        .game {
+            width: 90%;
+            max-width: 750px;
+
+            background: #1c1c1c;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 0 30px rgba(0,0,0,0.6);
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+        }
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+
+            margin: 25px 0;
+        }
+
+        .stat {
+
+            background: #292929;
+
+            padding: 14px;
+
+            text-align: center;
+
+            border-radius: 8px;
+        }
+
+        .stat strong {
+
+            display: block;
+
+            font-size: 24px;
+
+            margin-top: 5px;
+        }
+
+        .encounter {
+
+            background: #151515;
+
+            padding: 25px;
+
+            border-radius: 8px;
+
+            min-height: 140px;
+
+            margin-bottom: 20px;
+        }
+
+        .encounter-title {
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            margin-bottom: 15px;
+        }
+
+        .buttons {
+
+            display: flex;
+
+            gap: 15px;
+
+            justify-content: center;
+        }
+
+        button {
+
+            padding: 14px 30px;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            border: none;
+
+            border-radius: 8px;
+        }
+
+        button:hover {
+
+            opacity: 0.8;
+        }
+
+        .fight {
+
+            background: #8b0000;
+
+            color: white;
+        }
+
+        .run {
+
+            background: #555;
+
+            color: white;
+        }
+
+        .hidden {
+
+            display: none;
+        }
+
+        input {
+
+            padding: 12px;
+
+            font-size: 16px;
+
+            width: 80%;
+
+            margin: 15px 0;
+        }
+
+        .message {
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            background: #242424;
+
+            border-radius: 8px;
+
+            white-space: pre-line;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="game">
+
+
+    <!-- ========================================= -->
+    <!-- START SCREEN -->
+    <!-- ========================================= -->
+
+    <div id="startScreen">
+
+        <h1>
+            Welcome to the Journey of the Dead
+        </h1>
+
+        <p>
+
+            A terrible horde caught you while you
+            were searching for supplies.
+
+        </p>
+
+        <p>
+
+            You escaped in your car and drove until
+            there was no more gasoline.
+
+        </p>
+
+        <p>
+
+            Your family is somewhere ahead.
+
+            You have only one objective:
+
+            <strong>make it home.</strong>
+
+        </p>
+
+        <p>
+
+            The journey will last 30 days.
+
+            Every day brings three encounters.
+
+        </p>
+
+        <input
+            type="text"
+            id="playerName"
+            placeholder="Enter your name"
+        >
+
+        <br>
+
+        <button onclick="startGame()">
+
+            START GAME
+
+        </button>
+
+    </div>
+
+
+
+    <!-- ========================================= -->
+    <!-- GAME SCREEN -->
+    <!-- ========================================= -->
+
+    <div id="gameScreen" class="hidden">
+
+
+        <h1>
+            The Journey of the Dead
+        </h1>
+
+
+        <p
+            id="dayDisplay"
+            class="subtitle">
+        </p>
+
+
+        <!-- STATS -->
+
+        <div class="stats">
+
+
+            <div class="stat">
+
+                ❤️
+
+                <br>
+
+                Health
+
+                <strong id="health">
+                    100
+                </strong>
+
+            </div>
+
+
+            <div class="stat">
+
+                ⚔️
+
+                <br>
+
+                Combat
+
+                <strong id="combat">
+                    5
+                </strong>
+
+            </div>
+
+
+            <div class="stat">
+
+                🍖
+
+                <br>
+
+                Hunger
+
+                <strong id="hunger">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="stat">
+
+                💧
+
+                <br>
+
+                Thirst
+
+                <strong id="thirst">
+                    0
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ENCOUNTER -->
+
+        <div class="encounter">
+
+
+            <div
+                id="encounterTitle"
+                class="encounter-title">
+
+                The Journey Begins
+
+            </div>
+
+
+            <div
+                id="encounterText">
+
+                You begin your journey.
+
+            </div>
+
+
+            <div
+                id="message"
+                class="message hidden">
+            </div>
+
+
+        </div>
+
+
+
+        <!-- BUTTONS -->
+
+        <div class="buttons">
+
+
+            <button
+                class="fight"
+                onclick="fight()">
+
+                ⚔️ FIGHT
+
+            </button>
+
+
+            <button
+                class="run"
+                onclick="run()">
+
+                🏃 RUN
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+// =====================================================
+// PLAYER
+// =====================================================
+
+let player = {
+
+    name: "",
+
+    health: 100,
+
+    combat: 5,
+
+    hunger: 0,
+
+    thirst: 0,
+
+    day: 1,
+
+    encounter: 1
+
+};
+
+
+// =====================================================
+// ENCOUNTER
+// =====================================================
+
+let currentEncounter = {
+
+    title: "",
+
+    description: "",
+
+    zombieCombat: 5,
+
+    food: 0,
+
+    water: 0,
+
+    combatGain: 1
+
+};
+
+
+// =====================================================
+// SAMPLE ENCOUNTERS
+// =====================================================
+
+const encounters = [
+
+    {
+
+        title:
+            "A Walker",
+
+        description:
+            "A lone walker stands in the middle of the road.",
+
+        zombieCombat: 3,
+
+        food: 0,
+
+        water: 0,
+
+        combatGain: 1
+
+    },
+
+
+    {
+
+        title:
+            "A Group",
+
+        description:
+            "You see several dead wandering between the cars.",
+
+        zombieCombat: 8,
+
+        food: 0,
+
+        water: 0,
+
+        combatGain: 2
+
+    },
+
+
+    {
+
+        title:
+            "Something Isn't Right",
+
+        description:
+            "You spot what looks like a single zombie. " +
+            "But there may be more hiding nearby.",
+
+        zombieCombat: 14,
+
+        food: 4,
+
+        water: 0,
+
+        combatGain: 3
+
+    },
+
+
+    {
+
+        title:
+            "A Horde",
+
+        description:
+            "You hear hundreds of dead moving in the distance.",
+
+        zombieCombat: 35,
+
+        food: 0,
+
+        water: 0,
+
+        combatGain: 5
+
+    },
+
+
+    {
+
+        title:
+            "An Abandoned Store",
+
+        description:
+            "The store looks empty. You aren't sure " +
+            "whether anything useful remains inside.",
+
+        zombieCombat: 6,
+
+        food: 5,
+
+        water: 5,
+
+        combatGain: 2
+
+    }
+
+];
+
+
+// =====================================================
+// START GAME
+// =====================================================
+
+function startGame() {
+
+
+    const name =
+        document
+            .getElementById("playerName")
+            .value
+            .trim();
+
+
+    if (name === "") {
+
+        alert(
+            "Please enter your name."
+        );
+
+        return;
+
+    }
+
+
+    player.name = name;
+
+
+    document
+        .getElementById("startScreen")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById("gameScreen")
+        .classList
+        .remove("hidden");
+
+
+    updateScreen();
+
+    newEncounter();
+
+}
+
+
+// =====================================================
+// NEW ENCOUNTER
+// =====================================================
+
+function newEncounter() {
+
+
+    const randomIndex =
+        Math.floor(
+            Math.random() *
+            encounters.length
+        );
+
+
+    currentEncounter =
+        encounters[randomIndex];
+
+
+    document
+        .getElementById("encounterTitle")
+        .innerText =
+        currentEncounter.title;
+
+
+    document
+        .getElementById("encounterText")
+        .innerText =
+        currentEncounter.description;
+
+
+    document
+        .getElementById("message")
+        .classList
+        .add("hidden");
+
+}
+
+
+// =====================================================
+// FIGHT
+// =====================================================
+
+function fight() {
+
+
+    const zombieCombat =
+        currentEncounter.zombieCombat;
+
+
+    // Player random roll
+    const playerRandom =
+        Math.floor(
+            Math.random() * 11
+        );
+
+
+    // Zombie random roll
+    const zombieRandom =
+        Math.floor(
+            Math.random() * 7
+        );
+
+
+    const playerTotal =
+        player.combat +
+        player.combat * playerRandom;
+
+
+    const zombieTotal =
+        zombieCombat +
+        zombieCombat * zombieRandom;
+
+
+    const difference =
+        playerTotal -
+        zombieTotal;
+
+
+    let damage = 0;
+
+
+    // =================================================
+    // DAMAGE TABLE
+    // =================================================
+
+    if (difference >= 20) {
+
+        damage = 0;
+
+    }
+
+    else if (difference >= 10) {
+
+        damage = 0;
+
+    }
+
+    else if (difference >= 1) {
+
+        damage = 5;
+
+    }
+
+    else if (difference === 0) {
+
+        damage = 10;
+
+    }
+
+    else if (difference >= -9) {
+
+        damage = 15;
+
+    }
+
+    else if (difference >= -19) {
+
+        damage = 25;
+
+    }
+
+    else {
+
+        damage = 40;
+
+    }
+
+
+    // =================================================
+    // APPLY COMBAT DAMAGE
+    // =================================================
+
+    player.health -= damage;
+
+
+    if (player.health < 0) {
+
+        player.health = 0;
+
+    }
+
+
+    updateScreen();
+
+
+    // =================================================
+    // DEATH
+    // =================================================
+
+    if (player.health <= 0) {
+
+        gameOver();
+
+        return;
+
+    }
+
+
+    // =================================================
+    // COMBAT EXPERIENCE
+    // =================================================
+
+    let combatGain =
+        currentEncounter.combatGain;
+
+
+    if (difference > 0) {
+
+
+        player.combat =
+            Math.min(
+                40,
+                player.combat + combatGain
+            );
+
+
+        showMessage(
+
+            "YOU SURVIVED\n\n" +
+
+            "Your Combat: " +
+            playerTotal +
+
+            "\nZombie Combat: " +
+            zombieTotal +
+
+            "\n\nYou lost " +
+            damage +
+            " Health." +
+
+            "\n\n+" +
+            combatGain +
+            " Combat."
+
+        );
+
+    }
+
+
+    else {
+
+
+        const halfGain =
+            Math.max(
+                1,
+                Math.floor(
+                    combatGain / 2
+                )
+            );
+
+
+        player.combat =
+            Math.min(
+                40,
+                player.combat + halfGain
+            );
+
+
+        showMessage(
+
+            "BARELY SURVIVED\n\n" +
+
+            "Your Combat: " +
+            playerTotal +
+
+            "\nZombie Combat: " +
+            zombieTotal +
+
+            "\n\nYou lost " +
+            damage +
+            " Health." +
+
+            "\n\n+" +
+            halfGain +
+            " Combat."
+
+        );
+
+    }
+
+
+    // =================================================
+    // SURVIVAL EFFECTS
+    // =================================================
+
+    survivalEffects();
+
+
+    if (player.health <= 0) {
+
+        gameOver();
+
+        return;
+
+    }
+
+
+    // =================================================
+    // DISCOVERY
+    // =================================================
+
+    let discoveryText = "";
+
+
+    if (currentEncounter.food > 0) {
+
+
+        player.hunger =
+            Math.max(
+                0,
+                player.hunger -
+                currentEncounter.food
+            );
+
+
+        discoveryText +=
+            "\n\n🍖 You found " +
+            currentEncounter.food +
+            " Food.";
+
+    }
+
+
+    if (currentEncounter.water > 0) {
+
+
+        player.thirst =
+            Math.max(
+                0,
+                player.thirst -
+                currentEncounter.water
+            );
+
+
+        discoveryText +=
+            "\n💧 You found " +
+            currentEncounter.water +
+            " Water.";
+
+    }
+
+
+    if (
+        currentEncounter.food === 0 &&
+        currentEncounter.water === 0
+    ) {
+
+        discoveryText +=
+            "\n\nYou found nothing useful.";
+
+    }
+
+
+    showMessage(
+        document
+            .getElementById("message")
+            .innerText +
+        discoveryText
+    );
+
+
+    updateScreen();
+
+
+    // =================================================
+    // NEXT TURN
+    // =================================================
+
+    nextTurn();
+
+}
+
+
+// =====================================================
+// RUN
+// =====================================================
+
+function run() {
+
+
+    showMessage(
+
+        "You decided to run.\n\n" +
+        "You continue your journey."
+
+    );
+
+
+    // Running still consumes survival resources
+
+    survivalEffects();
+
+
+    if (player.health <= 0) {
+
+        gameOver();
+
+        return;
+
+    }
+
+
+    nextTurn();
+
+}
+
+
+// =====================================================
+// SURVIVAL EFFECTS
+// =====================================================
+
+function survivalEffects() {
+
+
+    // Hunger +2
+
+    player.hunger =
+        Math.min(
+            100,
+            player.hunger + 2
+        );
+
+
+    // Thirst +3
+
+    player.thirst =
+        Math.min(
+            100,
+            player.thirst + 3
+        );
+
+
+    let hungerPenalty = 0;
+
+    let thirstPenalty = 0;
+
+
+    // =================================================
+    // HUNGER
+    // =================================================
+
+    if (player.hunger > 80) {
+
+        hungerPenalty = 15;
+
+    }
+
+    else if (player.hunger > 50) {
+
+        hungerPenalty = 8;
+
+    }
+
+    else if (player.hunger > 30) {
+
+        hungerPenalty = 3;
+
+    }
+
+
+    // =================================================
+    // THIRST
+    // =================================================
+
+    if (player.thirst > 80) {
+
+        thirstPenalty = 15;
+
+    }
+
+    else if (player.thirst > 50) {
+
+        thirstPenalty = 8;
+
+    }
+
+    else if (player.thirst > 30) {
+
+        thirstPenalty = 3;
+
+    }
+
+
+    const totalPenalty =
+        hungerPenalty +
+        thirstPenalty;
+
+
+    if (totalPenalty > 0) {
+
+
+        player.health -=
+            totalPenalty;
+
+
+        if (player.health < 0) {
+
+            player.health = 0;
+
+        }
+
+
+        showMessage(
+
+            "THE JOURNEY IS TAKING ITS TOLL\n\n" +
+
+            "Hunger: -" +
+            hungerPenalty +
+            " Health\n" +
+
+            "Thirst: -" +
+            thirstPenalty +
+            " Health\n\n" +
+
+            "Total: -" +
+            totalPenalty +
+            " Health"
+
+        );
+
+    }
+
+
+    updateScreen();
+
+}
+
+
+// =====================================================
+// NEXT TURN
+// =====================================================
+
+function nextTurn() {
+
+
+    player.encounter++;
+
+
+    if (player.encounter > 3) {
+
+
+        player.encounter = 1;
+
+        player.day++;
+
+
+        // =================================================
+        // VICTORY
+        // =================================================
+
+        if (player.day > 30) {
+
+            victory();
+
+            return;
+
+        }
+
+
+        alert(
+
+            "A NEW DAY BEGINS...\n\n" +
+
+            "Another day on the road.\n" +
+
+            "Another day closer to home."
+
+        );
+
+    }
+
+
+    updateScreen();
+
+    newEncounter();
+
+}
+
+
+// =====================================================
+// GAME OVER
+// =====================================================
+
+function gameOver() {
+
+
+    alert(
+
+        "You fought bravely...\n\n" +
+
+        "But the dead were too many.\n\n" +
+
+        "YOU DIED.\n\n" +
+
+        "Your journey ends here."
+
+    );
+
+
+    location.reload();
+
+}
+
+
+// =====================================================
+// VICTORY
+// =====================================================
+
+function victory() {
+
+
+    alert(
+
+        "You finally made it...\n\n" +
+
+        "After 30 days of fighting, " +
+        "running and surviving...\n\n" +
+
+        "You see your home in the distance."
+
+    );
+
+
+    alert(
+
+        "You made it home.\n\n" +
+
+        "Your son sees you.\n\n" +
+
+        "He runs toward you, " +
+        "throws his arms around you " +
+        "and hugs you as he cries."
+
+    );
+
+
+    alert(
+
+        "You hold him tightly.\n\n" +
+
+        "For the first time in 30 days, " +
+        "you don't have to run.\n" +
+
+        "You don't have to fight.\n" +
+
+        "You don't have to survive.\n\n" +
+
+        "You're home."
+
+    );
+
+
+    alert(
+
+        "Tough times are worth enduring " +
+        "for the people we love."
+
+    );
+
+
+    alert(
+
+        "Created by Felipe & ChatGPT"
+
+    );
+
+}
+
+
+// =====================================================
+// SHOW MESSAGE
+// =====================================================
+
+function showMessage(text) {
+
+
+    const message =
+        document
+            .getElementById("message");
+
+
+    message.innerText = text;
+
+
+    message
+        .classList
+        .remove("hidden");
+
+}
+
+
+// =====================================================
+// UPDATE SCREEN
+// =====================================================
+
+function updateScreen() {
+
+
+    document
+        .getElementById("health")
+        .innerText =
+        player.health;
+
+
+    document
+        .getElementById("combat")
+        .innerText =
+        player.combat;
+
+
+    document
+        .getElementById("hunger")
+        .innerText =
+        player.hunger;
+
+
+    document
+        .getElementById("thirst")
+        .innerText =
+        player.thirst;
+
+
+    document
+        .getElementById("dayDisplay")
+        .innerText =
+
+        "Day " +
+        player.day +
+
+        " — Encounter " +
+        player.encounter +
+        "/3";
+
+}
+
+
+// =====================================================
+
+</script>
+
+</body>
+
+</html>
