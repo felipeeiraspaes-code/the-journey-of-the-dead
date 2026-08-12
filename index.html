@@ -1991,7 +1991,7 @@ function survivalEffects() {
    NEXT TURN
 ===================================================== */
 
-function nextTurn() {
+function nextTurn() { 
 
     player.encounter++;
 
@@ -2025,6 +2025,7 @@ function nextTurn() {
             return;
         }
 
+    
 
 document
     .getElementById("overlay")
@@ -2048,16 +2049,13 @@ document
 overlayStep = 50;
 
 return;
-`
-    }
-
+}
 
     updateScreen();
 
     newEncounter();
+
 }
-
-
 /* =====================================================
    GAME OVER
 ===================================================== */
