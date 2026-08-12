@@ -92,12 +92,12 @@ button {
     border-radius: 8px;
 }
 
-.Yes {
+.fight {
     background: #8b0000;
     color: white;
 }
 
-.No {
+.run {
     background: #555;
     color: white;
 }
@@ -218,29 +218,37 @@ Thirst
     class="message hidden">
 </div>
 
-<div
-    id="combatResultBox"
-    class="message hidden">
-</div>
+<div id="combatResultBox" class="message hidden"></div>
 
-<div
-    id="gainResultBox"
-    class="message hidden">
-</div>
+<button
+    id="combatContinue"
+    class="hidden"
+    onclick="showGains()">
+    Continue
+</button>
+
+<div id="gainResultBox" class="message hidden"></div>
+
+<button
+    id="gainContinue"
+    class="hidden"
+    onclick="finishEncounter()">
+    Continue
+</button>
 
 
 <div class="buttons">
 
 <button
-    class="Yes"
+    class="fight"
     onclick="fight()">
-⚔️ FIGHT
+⚔️ Let's Go!
 </button>
 
 <button
-    class="No"
+    class="run"
     onclick="run()">
-🏃 RUN
+🏃 No way!!
 </button>
 
 </div>
@@ -1315,11 +1323,12 @@ function newEncounter() {
         encounter.description +
         "\n\n" +
         encounter.question;
+    document.querySelector(".buttons").style.display = "flex";
     
-        document
-            .getElementById("message")
-            .classList
-            .add("hidden");
+    document
+        .getElementById("message")
+        .classList
+        .add("hidden");
     }
     document
         .getElementById("combatResultBox")
@@ -1340,7 +1349,7 @@ function newEncounter() {
 ===================================================== */
 
 function fight() {
-
+    document.querySelector(".buttons").style.display = "none";
     const encounter =
         window.currentEncounter;
 
@@ -1656,26 +1665,53 @@ function fight() {
 
     `;
 
-
-    gainBox.classList.remove("hidden");
-
-
-    /* =================================================
-       UPDATE SCREEN
-    ================================================= */
-
+    window.pendingGainHTML = gainBox.innerHTML;
+    
+    document
+        .getElementById("combatContinue")
+        .classList
+        .remove("hidden");
+    
     updateScreen();
+    
+    return;
 
+function showGains() {
 
-    /* =================================================
-       NEXT TURN
-    ================================================= */
+    document
+        .getElementById("combatContinue")
+        .classList
+        .add("hidden");
+
+    document
+        .getElementById("gainResultBox")
+        .classList
+        .remove("hidden");
+
+    document
+        .getElementById("gainContinue")
+        .classList
+        .remove("hidden");
+}
+function finishEncounter() {
+
+    document
+        .getElementById("gainContinue")
+        .classList
+        .add("hidden");
+
+    document
+        .getElementById("combatResultBox")
+        .classList
+        .add("hidden");
+
+    document
+        .getElementById("gainResultBox")
+        .classList
+        .add("hidden");
 
     nextTurn();
-
 }
-
-
 function formatResource(value) {
 
     if (value > 0) {
@@ -1695,7 +1731,7 @@ updateScreen();
 nextTurn();
 
 function run() {
-
+    document.querySelector(".buttons").style.display = "none";
     const encounter =
         window.currentEncounter;
 
