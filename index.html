@@ -1759,6 +1759,7 @@ function run() {
 
 function overlayContinue() {
 
+    /* COMBAT → GAINS */
     if (overlayStep === 1) {
 
         document
@@ -1771,6 +1772,7 @@ function overlayContinue() {
         return;
     }
 
+    /* GAINS → SURVIVAL */
     if (overlayStep === 2) {
 
         if (survivalHTML !== "") {
@@ -1797,6 +1799,7 @@ function overlayContinue() {
         return;
     }
 
+    /* SURVIVAL AFTER COMBAT */
     if (overlayStep === 3) {
 
         survivalHTML = "";
@@ -1813,19 +1816,67 @@ function overlayContinue() {
         return;
     }
 
+    /* RUN SCREEN */
     if (overlayStep === 99) {
+
+        if (survivalHTML !== "") {
+
+            document
+                .getElementById("overlayText")
+                .innerHTML =
+                survivalHTML;
+
+            overlayStep = 100;
+
+            return;
+        }
 
         document
             .getElementById("overlay")
             .classList
             .add("hidden");
 
-        overlayStep = 3;
+        overlayStep = 0;
 
         nextTurn();
+
+        return;
+    }
+
+    /* SURVIVAL AFTER RUNNING */
+    if (overlayStep === 100) {
+
+        survivalHTML = "";
+
+        document
+            .getElementById("overlay")
+            .classList
+            .add("hidden");
+
+        overlayStep = 0;
+
+        nextTurn();
+
+        return;
+    }
+
+    /* NEW DAY SCREEN */
+    if (overlayStep === 50) {
+
+        document
+            .getElementById("overlay")
+            .classList
+            .add("hidden");
+
+        overlayStep = 0;
+
+        updateScreen();
+
+        newEncounter();
+
+        return;
     }
 }
-
 /* =====================================================
    SURVIVAL EFFECTS
 ===================================================== */
@@ -1975,15 +2026,29 @@ function nextTurn() {
         }
 
 
-        alert(
+document
+    .getElementById("overlay")
+    .classList
+    .remove("hidden");
 
-            "A NEW DAY BEGINS...\n\n" +
+document
+    .getElementById("overlayText")
+    .innerHTML = `
+        <h2>☀️ DAY ${player.day}</h2>
 
-            "Another day on the road.\n" +
+        <p>
+            Another day on the road.
+        </p>
 
-            "Another day closer to home."
+        <p>
+            Another day closer to home.
+        </p>
+    `;
 
-        );
+overlayStep = 50;
+
+return;
+`
     }
 
 
