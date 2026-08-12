@@ -92,12 +92,12 @@ button {
     border-radius: 8px;
 }
 
-.fight {
+.Yes {
     background: #8b0000;
     color: white;
 }
 
-.run {
+.No {
     background: #555;
     color: white;
 }
@@ -232,13 +232,13 @@ Thirst
 <div class="buttons">
 
 <button
-    class="Let's Go!"
+    class="Yes"
     onclick="fight()">
 ⚔️ FIGHT
 </button>
 
 <button
-    class="No way!"
+    class="No"
     onclick="run()">
 🏃 RUN
 </button>
@@ -1309,27 +1309,27 @@ function newEncounter() {
 
 
 
-document
-    .getElementById("encounterText")
-    .innerText =
-    encounter.description +
-    "\n\n" +
-    encounter.question;
-
     document
-        .getElementById("message")
+        .getElementById("encounterText")
+        .innerText =
+        encounter.description +
+        "\n\n" +
+        encounter.question;
+    
+        document
+            .getElementById("message")
+            .classList
+            .add("hidden");
+    }
+    document
+        .getElementById("combatResultBox")
         .classList
         .add("hidden");
-}
-document
-    .getElementById("combatResultBox")
-    .classList
-    .add("hidden");
-
-document
-    .getElementById("gainResultBox")
-    .classList
-    .add("hidden");
+    
+    document
+        .getElementById("gainResultBox")
+        .classList
+        .add("hidden");
 
 /* =====================================================
    FIGHT
@@ -1704,8 +1704,6 @@ function run() {
 
         "You decided to run.\n\n" +
 
-        encounter.decisionMessage +
-
         "\n\nYou continue your journey."
 
     );
@@ -2066,7 +2064,7 @@ document
     player.day +
     " — " +
     time;
-
+}
 </script>
 
 </body>
