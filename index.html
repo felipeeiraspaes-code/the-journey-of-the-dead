@@ -1,407 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <title>The Journey of the Dead</title>
-
-    <style>
-
-        body {
-            margin: 0;
-            background: #111;
-            color: #eee;
-            font-family: Arial, sans-serif;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            min-height: 100vh;
-        }
-
-        .game {
-            width: 90%;
-            max-width: 750px;
-
-            background: #1c1c1c;
-
-            padding: 30px;
-
-            border-radius: 12px;
-
-            box-shadow:
-                0 0 30px rgba(0,0,0,0.6);
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 0;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #aaa;
-        }
-
-        .stats {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 10px;
-
-            margin: 25px 0;
-        }
-
-        .stat {
-
-            background: #292929;
-
-            padding: 14px;
-
-            text-align: center;
-
-            border-radius: 8px;
-        }
-
-        .stat strong {
-
-            display: block;
-
-            font-size: 24px;
-
-            margin-top: 5px;
-        }
-
-        .encounter {
-
-            background: #151515;
-
-            padding: 25px;
-
-            border-radius: 8px;
-
-            min-height: 140px;
-
-            margin-bottom: 20px;
-        }
-
-        .encounter-title {
-
-            font-size: 20px;
-
-            font-weight: bold;
-
-            margin-bottom: 15px;
-        }
-
-        .buttons {
-
-            display: flex;
-
-            gap: 15px;
-
-            justify-content: center;
-        }
-
-        button {
-
-            padding: 14px 30px;
-
-            font-size: 16px;
-
-            cursor: pointer;
-
-            border: none;
-
-            border-radius: 8px;
-        }
-
-        button:hover {
-
-            opacity: 0.8;
-        }
-
-        .fight {
-
-            background: #8b0000;
-
-            color: white;
-        }
-
-        .run {
-
-            background: #555;
-
-            color: white;
-        }
-
-        .hidden {
-
-            display: none;
-        }
-
-        input {
-
-            padding: 12px;
-
-            font-size: 16px;
-
-            width: 80%;
-
-            margin: 15px 0;
-        }
-
-        .message {
-
-            margin-top: 20px;
-
-            padding: 15px;
-
-            background: #242424;
-
-            border-radius: 8px;
-
-            white-space: pre-line;
-        }
-
-    </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Journey of the Dead</title>
+
+<style>
+body {
+    margin: 0;
+    background: #111;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.game {
+    width: 90%;
+    max-width: 750px;
+    background: #1c1c1c;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 30px rgba(0,0,0,.6);
+}
+
+h1 {
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+    color: #aaa;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 25px 0;
+}
+
+.stat {
+    background: #292929;
+    padding: 14px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 24px;
+    margin-top: 5px;
+}
+
+.encounter {
+    background: #151515;
+    padding: 25px;
+    border-radius: 8px;
+    min-height: 150px;
+    margin-bottom: 20px;
+}
+
+.encounter-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.message {
+    margin-top: 20px;
+    padding: 15px;
+    background: #242424;
+    border-radius: 8px;
+    white-space: pre-line;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+button {
+    padding: 14px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+}
+
+.fight {
+    background: #8b0000;
+    color: white;
+}
+
+.run {
+    background: #555;
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
+
+input {
+    padding: 12px;
+    font-size: 16px;
+    width: 80%;
+    margin: 15px 0;
+}
+</style>
 </head>
-
 
 <body>
 
-
 <div class="game">
 
+<!-- START SCREEN -->
 
-    <!-- ========================================= -->
-    <!-- START SCREEN -->
-    <!-- ========================================= -->
+<div id="startScreen">
 
-    <div id="startScreen">
+<h1>Welcome to the Journey of the Dead</h1>
 
-        <h1>
-            Welcome to the Journey of the Dead
-        </h1>
+<p>
+A terrible horde caught you while you were searching
+for supplies.
+</p>
 
-        <p>
+<p>
+You escaped in your car and drove until there was
+no more gasoline.
+</p>
 
-            A terrible horde caught you while you
-            were searching for supplies.
+<p>
+Your family is somewhere ahead.
+</p>
 
-        </p>
+<p>
+You have only one objective:
+<strong>make it home.</strong>
+</p>
 
-        <p>
+<p>
+The journey is currently a <strong>10-day test</strong>.
+</p>
 
-            You escaped in your car and drove until
-            there was no more gasoline.
+<input
+    id="playerName"
+    type="text"
+    placeholder="Enter your name"
+>
 
-        </p>
+<br>
 
-        <p>
-
-            Your family is somewhere ahead.
-
-            You have only one objective:
-
-            <strong>make it home.</strong>
-
-        </p>
-
-        <p>
-
-            The journey will last 30 days.
-
-            Every day brings three encounters.
-
-        </p>
-
-        <input
-            type="text"
-            id="playerName"
-            placeholder="Enter your name"
-        >
-
-        <br>
-
-        <button onclick="startGame()">
-
-            START GAME
-
-        </button>
-
-    </div>
-
-
-
-    <!-- ========================================= -->
-    <!-- GAME SCREEN -->
-    <!-- ========================================= -->
-
-    <div id="gameScreen" class="hidden">
-
-
-        <h1>
-            The Journey of the Dead
-        </h1>
-
-
-        <p
-            id="dayDisplay"
-            class="subtitle">
-        </p>
-
-
-        <!-- STATS -->
-
-        <div class="stats">
-
-
-            <div class="stat">
-
-                ❤️
-
-                <br>
-
-                Health
-
-                <strong id="health">
-                    100
-                </strong>
-
-            </div>
-
-
-            <div class="stat">
-
-                ⚔️
-
-                <br>
-
-                Combat
-
-                <strong id="combat">
-                    5
-                </strong>
-
-            </div>
-
-
-            <div class="stat">
-
-                🍖
-
-                <br>
-
-                Hunger
-
-                <strong id="hunger">
-                    0
-                </strong>
-
-            </div>
-
-
-            <div class="stat">
-
-                💧
-
-                <br>
-
-                Thirst
-
-                <strong id="thirst">
-                    0
-                </strong>
-
-            </div>
-
-
-        </div>
-
-
-
-        <!-- ENCOUNTER -->
-
-        <div class="encounter">
-
-
-            <div
-                id="encounterTitle"
-                class="encounter-title">
-
-                The Journey Begins
-
-            </div>
-
-
-            <div
-                id="encounterText">
-
-                You begin your journey.
-
-            </div>
-
-
-            <div
-                id="message"
-                class="message hidden">
-            </div>
-
-
-        </div>
-
-
-
-        <!-- BUTTONS -->
-
-        <div class="buttons">
-
-
-            <button
-                class="fight"
-                onclick="fight()">
-
-                ⚔️ FIGHT
-
-            </button>
-
-
-            <button
-                class="run"
-                onclick="run()">
-
-                🏃 RUN
-
-            </button>
-
-
-        </div>
-
-
-    </div>
-
+<button onclick="startGame()">
+START GAME
+</button>
 
 </div>
 
 
+<!-- GAME -->
+
+<div id="gameScreen" class="hidden">
+
+<h1>The Journey of the Dead</h1>
+
+<div id="dayDisplay" class="subtitle"></div>
+
+<div class="stats">
+
+<div class="stat">
+❤️
+<br>
+Health
+<strong id="health">100</strong>
+</div>
+
+<div class="stat">
+⚔️
+<br>
+Combat
+<strong id="combat">5</strong>
+</div>
+
+<div class="stat">
+🍖
+<br>
+Hunger
+<strong id="hunger">0</strong>
+</div>
+
+<div class="stat">
+💧
+<br>
+Thirst
+<strong id="thirst">0</strong>
+</div>
+
+</div>
+
+<div class="encounter">
+
+<div
+    id="encounterTitle"
+    class="encounter-title">
+</div>
+
+<div id="encounterText"></div>
+
+<div
+    id="message"
+    class="message hidden">
+</div>
+
+</div>
+
+<div class="buttons">
+
+<button
+    class="fight"
+    onclick="fight()">
+⚔️ FIGHT
+</button>
+
+<button
+    class="run"
+    onclick="run()">
+🏃 RUN
+</button>
+
+</div>
+
+</div>
+
+</div>
+
 
 <script>
 
+/* =====================================================
+   GAME SETTINGS
+===================================================== */
 
-// =====================================================
-// PLAYER
-// =====================================================
+const MAX_DAYS = 10;
+
+const ENCOUNTERS_PER_DAY = 3;
+
+const MAX_COMBAT = 40;
+
+
+/* =====================================================
+   PLAYER
+===================================================== */
 
 let player = {
 
@@ -422,240 +276,231 @@ let player = {
 };
 
 
-// =====================================================
-// ENCOUNTER
-// =====================================================
+/* =====================================================
+   TEMPORARY ENCOUNTER DATABASE
+=====================================================
 
-let currentEncounter = {
+   IMPORTANT:
 
-    title: "",
+   This is temporary until we insert your
+   actual 70 encounters.
 
-    description: "",
+   Each encounter follows your Excel structure:
 
-    zombieCombat: 5,
+   ID
+   Description
+   Zombie Combat
+   Food
+   Water
+   Combat Gain
+   Fight Message
+   Discovery Message
+   Decision Message
 
-    food: 0,
-
-    water: 0,
-
-    combatGain: 1
-
-};
-
-
-// =====================================================
-// SAMPLE ENCOUNTERS
-// =====================================================
+===================================================== */
 
 const encounters = [
 
     {
-
-        title:
-            "A Walker",
-
+        id: 1,
         description:
-            "A lone walker stands in the middle of the road.",
-
+            "A lone walker stands in the road.",
         zombieCombat: 3,
-
         food: 0,
-
         water: 0,
-
-        combatGain: 1
-
+        combatGain: 1,
+        fightMessage:
+            "You take down the walker.",
+        discoveryMessage:
+            "You find nothing useful.",
+        decisionMessage:
+            "Do you fight or run?"
     },
 
-
     {
-
-        title:
-            "A Group",
-
+        id: 2,
         description:
-            "You see several dead wandering between the cars.",
-
+            "Several dead wander between abandoned cars.",
         zombieCombat: 8,
-
         food: 0,
-
         water: 0,
-
-        combatGain: 2
-
+        combatGain: 2,
+        fightMessage:
+            "The group is down.",
+        discoveryMessage:
+            "You search the cars but find nothing useful.",
+        decisionMessage:
+            "Do you fight or run?"
     },
 
-
     {
-
-        title:
-            "Something Isn't Right",
-
+        id: 3,
         description:
-            "You spot what looks like a single zombie. " +
-            "But there may be more hiding nearby.",
-
+            "You spot what looks like a single zombie.",
         zombieCombat: 14,
-
         food: 4,
-
         water: 0,
-
-        combatGain: 3
-
+        combatGain: 3,
+        fightMessage:
+            "You survive the fight.",
+        discoveryMessage:
+            "After the fight, you discover some food.",
+        decisionMessage:
+            "Do you fight or run?"
     },
 
-
     {
-
-        title:
-            "A Horde",
-
+        id: 4,
         description:
-            "You hear hundreds of dead moving in the distance.",
-
+            "You hear hundreds of dead moving nearby.",
         zombieCombat: 35,
-
         food: 0,
-
         water: 0,
-
-        combatGain: 5
-
-    },
-
-
-    {
-
-        title:
-            "An Abandoned Store",
-
-        description:
-            "The store looks empty. You aren't sure " +
-            "whether anything useful remains inside.",
-
-        zombieCombat: 6,
-
-        food: 5,
-
-        water: 5,
-
-        combatGain: 2
-
+        combatGain: 5,
+        fightMessage:
+            "Somehow, you survive.",
+        discoveryMessage:
+            "There is nothing useful here.",
+        decisionMessage:
+            "Do you fight or run?"
     }
 
 ];
 
 
-// =====================================================
-// START GAME
-// =====================================================
+/* =====================================================
+   START GAME
+===================================================== */
 
 function startGame() {
 
-
     const name =
         document
-            .getElementById("playerName")
-            .value
-            .trim();
-
+        .getElementById("playerName")
+        .value
+        .trim();
 
     if (name === "") {
 
-        alert(
-            "Please enter your name."
-        );
+        alert("Please enter your name.");
 
         return;
-
     }
 
-
     player.name = name;
-
 
     document
         .getElementById("startScreen")
         .classList
         .add("hidden");
 
-
     document
         .getElementById("gameScreen")
         .classList
         .remove("hidden");
 
-
     updateScreen();
 
     newEncounter();
-
 }
 
 
-// =====================================================
-// NEW ENCOUNTER
-// =====================================================
+/* =====================================================
+   RANDOM ENCOUNTER 1–70
+===================================================== */
 
 function newEncounter() {
 
+    /*
+       This reproduces your Excel logic:
 
-    const randomIndex =
-        Math.floor(
-            Math.random() *
-            encounters.length
+       RANDOM 1–70
+          ↓
+       Encounter ID
+          ↓
+       Load encounter
+    */
+
+    const encounterID =
+        Math.floor(Math.random() * 70) + 1;
+
+
+    /*
+       Temporary fallback while the complete
+       70-row table is inserted.
+    */
+
+    let encounter =
+        encounters.find(
+            e => e.id === encounterID
         );
 
 
-    currentEncounter =
-        encounters[randomIndex];
+    if (!encounter) {
+
+        encounter =
+            encounters[
+                Math.floor(
+                    Math.random() *
+                    encounters.length
+                )
+            ];
+
+    }
+
+
+    window.currentEncounter = encounter;
 
 
     document
         .getElementById("encounterTitle")
         .innerText =
-        currentEncounter.title;
+        "Encounter " +
+        encounter.id;
 
 
     document
         .getElementById("encounterText")
         .innerText =
-        currentEncounter.description;
+        encounter.description;
 
 
     document
         .getElementById("message")
         .classList
         .add("hidden");
-
 }
 
 
-// =====================================================
-// FIGHT
-// =====================================================
+/* =====================================================
+   FIGHT
+===================================================== */
 
 function fight() {
 
+    const encounter =
+        window.currentEncounter;
+
 
     const zombieCombat =
-        currentEncounter.zombieCombat;
+        encounter.zombieCombat;
 
 
-    // Player random roll
+    /*
+       YOUR EXCEL RANDOM SYSTEM
+
+       Player:
+       Combat × random 0–9
+
+       Zombie:
+       Combat × random 0–5
+    */
+
     const playerRandom =
-        Math.floor(
-            Math.random() * 11
-        );
+        Math.floor(Math.random() * 10);
 
-
-    // Zombie random roll
     const zombieRandom =
-        Math.floor(
-            Math.random() * 7
-        );
+        Math.floor(Math.random() * 6);
 
 
     const playerTotal =
@@ -673,109 +518,93 @@ function fight() {
         zombieTotal;
 
 
-    let damage = 0;
+    let damage;
 
 
-    // =================================================
-    // DAMAGE TABLE
-    // =================================================
+    /* =================================================
+       YOUR DAMAGE TABLE
+    ================================================= */
 
     if (difference >= 20) {
 
         damage = 0;
 
-    }
-
-    else if (difference >= 10) {
+    } else if (difference >= 10) {
 
         damage = 0;
 
-    }
+    } else if (difference >= 1) {
 
-    else if (difference >= 1) {
+        damage = 0;
+
+    } else if (difference === 0) {
 
         damage = 5;
 
-    }
-
-    else if (difference === 0) {
+    } else if (difference >= -9) {
 
         damage = 10;
 
-    }
-
-    else if (difference >= -9) {
+    } else if (difference >= -19) {
 
         damage = 15;
 
-    }
-
-    else if (difference >= -19) {
+    } else if (difference >= -100) {
 
         damage = 25;
 
-    }
+    } else {
 
-    else {
-
-        damage = 40;
+        damage = 100;
 
     }
 
 
-    // =================================================
-    // APPLY COMBAT DAMAGE
-    // =================================================
+    /* =================================================
+       COMBAT DAMAGE
+    ================================================= */
 
     player.health -= damage;
 
-
     if (player.health < 0) {
-
         player.health = 0;
-
     }
 
 
     updateScreen();
 
 
-    // =================================================
-    // DEATH
-    // =================================================
+    /* =================================================
+       DEATH FROM COMBAT
+    ================================================= */
 
     if (player.health <= 0) {
 
         gameOver();
 
         return;
-
     }
 
 
-    // =================================================
-    // COMBAT EXPERIENCE
-    // =================================================
+    /* =================================================
+       COMBAT EXPERIENCE
+    ================================================= */
 
-    let combatGain =
-        currentEncounter.combatGain;
-
-
-    if (difference > 0) {
-
+    if (difference >= 0) {
 
         player.combat =
             Math.min(
-                40,
-                player.combat + combatGain
+                MAX_COMBAT,
+                player.combat +
+                encounter.combatGain
             );
 
 
         showMessage(
 
-            "YOU SURVIVED\n\n" +
+            encounter.fightMessage +
 
-            "Your Combat: " +
+            "\n\nYour Combat: " +
             playerTotal +
 
             "\nZombie Combat: " +
@@ -785,39 +614,34 @@ function fight() {
             damage +
             " Health." +
 
+            "\nHealth remaining: " +
+            player.health +
+
             "\n\n+" +
-            combatGain +
+            encounter.combatGain +
             " Combat."
 
         );
 
-    }
-
-
-    else {
-
+    } else {
 
         const halfGain =
-            Math.max(
-                1,
-                Math.floor(
-                    combatGain / 2
-                )
-            );
+            encounter.combatGain / 2;
 
 
         player.combat =
             Math.min(
-                40,
-                player.combat + halfGain
+                MAX_COMBAT,
+                player.combat +
+                halfGain
             );
 
 
         showMessage(
 
-            "BARELY SURVIVED\n\n" +
+            "You barely survived." +
 
-            "Your Combat: " +
+            "\n\nYour Combat: " +
             playerTotal +
 
             "\nZombie Combat: " +
@@ -826,19 +650,24 @@ function fight() {
             "\n\nYou lost " +
             damage +
             " Health." +
+
+            "\nHealth remaining: " +
+            player.health +
 
             "\n\n+" +
             halfGain +
             " Combat."
 
         );
-
     }
 
 
-    // =================================================
-    // SURVIVAL EFFECTS
-    // =================================================
+    /*
+       IMPORTANT:
+
+       Survival effects happen BEFORE
+       food and water discovery.
+    */
 
     survivalEffects();
 
@@ -848,102 +677,98 @@ function fight() {
         gameOver();
 
         return;
-
     }
 
 
-    // =================================================
-    // DISCOVERY
-    // =================================================
+    /* =================================================
+       DISCOVERY AFTER SURVIVAL
+    ================================================= */
 
-    let discoveryText = "";
+    let discovery = encounter.discoveryMessage;
 
 
-    if (currentEncounter.food > 0) {
-
+    if (encounter.food > 0) {
 
         player.hunger =
             Math.max(
                 0,
                 player.hunger -
-                currentEncounter.food
+                encounter.food
             );
 
 
-        discoveryText +=
-            "\n\n🍖 You found " +
-            currentEncounter.food +
-            " Food.";
-
+        discovery +=
+            "\n\n🍖 Food found: " +
+            encounter.food;
     }
 
 
-    if (currentEncounter.water > 0) {
-
+    if (encounter.water > 0) {
 
         player.thirst =
             Math.max(
                 0,
                 player.thirst -
-                currentEncounter.water
+                encounter.water
             );
 
 
-        discoveryText +=
-            "\n💧 You found " +
-            currentEncounter.water +
-            " Water.";
-
+        discovery +=
+            "\n💧 Water found: " +
+            encounter.water;
     }
 
 
     if (
-        currentEncounter.food === 0 &&
-        currentEncounter.water === 0
+        encounter.food === 0 &&
+        encounter.water === 0
     ) {
 
-        discoveryText +=
-            "\n\nYou found nothing useful.";
-
+        discovery +=
+            "\n\nNothing useful was found.";
     }
 
 
     showMessage(
         document
-            .getElementById("message")
-            .innerText +
-        discoveryText
+        .getElementById("message")
+        .innerText +
+        "\n\n" +
+        discovery
     );
 
 
     updateScreen();
 
 
-    // =================================================
-    // NEXT TURN
-    // =================================================
-
     nextTurn();
-
 }
 
 
-// =====================================================
-// RUN
-// =====================================================
+/* =====================================================
+   RUN
+===================================================== */
 
 function run() {
+
+    const encounter =
+        window.currentEncounter;
 
 
     showMessage(
 
         "You decided to run.\n\n" +
-        "You continue your journey."
+
+        encounter.decisionMessage +
+
+        "\n\nYou continue your journey."
 
     );
 
 
-    // Running still consumes survival resources
+    /*
+       Running still consumes survival.
+    */
 
     survivalEffects();
 
@@ -953,23 +778,23 @@ function run() {
         gameOver();
 
         return;
-
     }
 
 
     nextTurn();
-
 }
 
 
-// =====================================================
-// SURVIVAL EFFECTS
-// =====================================================
+/* =====================================================
+   SURVIVAL EFFECTS
+===================================================== */
 
 function survivalEffects() {
 
-
-    // Hunger +2
+    /*
+       HUNGER +2
+       THIRST +3
+    */
 
     player.hunger =
         Math.min(
@@ -977,8 +802,6 @@ function survivalEffects() {
             player.hunger + 2
         );
 
-
-    // Thirst +3
 
     player.thirst =
         Math.min(
@@ -992,49 +815,35 @@ function survivalEffects() {
     let thirstPenalty = 0;
 
 
-    // =================================================
-    // HUNGER
-    // =================================================
+    /* HUNGER */
 
     if (player.hunger > 80) {
 
         hungerPenalty = 15;
 
-    }
-
-    else if (player.hunger > 50) {
+    } else if (player.hunger > 50) {
 
         hungerPenalty = 8;
 
-    }
-
-    else if (player.hunger > 30) {
+    } else if (player.hunger > 30) {
 
         hungerPenalty = 3;
-
     }
 
 
-    // =================================================
-    // THIRST
-    // =================================================
+    /* THIRST */
 
     if (player.thirst > 80) {
 
         thirstPenalty = 15;
 
-    }
-
-    else if (player.thirst > 50) {
+    } else if (player.thirst > 50) {
 
         thirstPenalty = 8;
 
-    }
-
-    else if (player.thirst > 30) {
+    } else if (player.thirst > 30) {
 
         thirstPenalty = 3;
-
     }
 
 
@@ -1045,7 +854,6 @@ function survivalEffects() {
 
     if (totalPenalty > 0) {
 
-
         player.health -=
             totalPenalty;
 
@@ -1053,7 +861,6 @@ function survivalEffects() {
         if (player.health < 0) {
 
             player.health = 0;
-
         }
 
 
@@ -1071,46 +878,55 @@ function survivalEffects() {
 
             "Total: -" +
             totalPenalty +
-            " Health"
+            " Health\n\n" +
+
+            "Health remaining: " +
+            player.health
 
         );
-
     }
 
 
     updateScreen();
-
 }
 
 
-// =====================================================
-// NEXT TURN
-// =====================================================
+/* =====================================================
+   NEXT TURN
+===================================================== */
 
 function nextTurn() {
-
 
     player.encounter++;
 
 
-    if (player.encounter > 3) {
+    /*
+       Three encounters per day.
+    */
 
+    if (
+        player.encounter >
+        ENCOUNTERS_PER_DAY
+    ) {
 
         player.encounter = 1;
 
         player.day++;
 
 
-        // =================================================
-        // VICTORY
-        // =================================================
+        /*
+           CURRENT TEST:
+           10 DAYS
+        */
 
-        if (player.day > 30) {
+        if (
+            player.day >
+            MAX_DAYS
+        ) {
 
             victory();
 
             return;
-
         }
 
 
@@ -1123,23 +939,20 @@ function nextTurn() {
             "Another day closer to home."
 
         );
-
     }
 
 
     updateScreen();
 
     newEncounter();
-
 }
 
 
-// =====================================================
-// GAME OVER
-// =====================================================
+/* =====================================================
+   GAME OVER
+===================================================== */
 
 function gameOver() {
-
 
     alert(
 
@@ -1155,38 +968,43 @@ function gameOver() {
 
 
     location.reload();
-
 }
 
 
-// =====================================================
-// VICTORY
-// =====================================================
+/* =====================================================
+   VICTORY
+===================================================== */
 
 function victory() {
-
 
     alert(
 
         "You finally made it...\n\n" +
 
-        "After 30 days of fighting, " +
-        "running and surviving...\n\n" +
+        "After " +
+        MAX_DAYS +
+        " days of walking, fighting, " +
+        "running, starving and surviving...\n\n" +
 
-        "You see your home in the distance."
+        "You see your home in the distance.\n\n" +
+
+        "You made it home."
 
     );
 
 
     alert(
 
-        "You made it home.\n\n" +
+        "You open the door.\n\n" +
+
+        "For a moment, everything is silent.\n\n" +
+
+        "Then you hear footsteps.\n\n" +
 
         "Your son sees you.\n\n" +
 
-        "He runs toward you, " +
-        "throws his arms around you " +
-        "and hugs you as he cries."
+        "He runs toward you, throws his arms " +
+        "around you and hugs you as he cries."
 
     );
 
@@ -1195,11 +1013,10 @@ function victory() {
 
         "You hold him tightly.\n\n" +
 
-        "For the first time in 30 days, " +
-        "you don't have to run.\n" +
-
+        "For the first time in " +
+        MAX_DAYS +
+        " days, you don't have to run.\n" +
         "You don't have to fight.\n" +
-
         "You don't have to survive.\n\n" +
 
         "You're home."
@@ -1217,23 +1034,29 @@ function victory() {
 
     alert(
 
-        "Created by Felipe & ChatGPT"
+        "CONGRATULATIONS ON FINISHING THE GAME\n\n" +
+
+        "CREATOR: FELIPE PAES\n" +
+
+        "TESTER: SANDYNHABIO\n\n" +
+
+        "CREDITS: TO MY LOVE SANDY,\n\n" +
+
+        "AND OUR LOVE FOR ZOMBIE APOCALYPSE <3"
 
     );
-
 }
 
 
-// =====================================================
-// SHOW MESSAGE
-// =====================================================
+/* =====================================================
+   MESSAGE
+===================================================== */
 
 function showMessage(text) {
 
-
     const message =
         document
-            .getElementById("message");
+        .getElementById("message");
 
 
     message.innerText = text;
@@ -1242,16 +1065,14 @@ function showMessage(text) {
     message
         .classList
         .remove("hidden");
-
 }
 
 
-// =====================================================
-// UPDATE SCREEN
-// =====================================================
+/* =====================================================
+   UPDATE SCREEN
+===================================================== */
 
 function updateScreen() {
-
 
     document
         .getElementById("health")
@@ -1262,7 +1083,7 @@ function updateScreen() {
     document
         .getElementById("combat")
         .innerText =
-        player.combat;
+        Math.floor(player.combat);
 
 
     document
@@ -1286,15 +1107,11 @@ function updateScreen() {
 
         " — Encounter " +
         player.encounter +
-        "/3";
-
+        "/" +
+        ENCOUNTERS_PER_DAY;
 }
-
-
-// =====================================================
 
 </script>
 
 </body>
-
 </html>
