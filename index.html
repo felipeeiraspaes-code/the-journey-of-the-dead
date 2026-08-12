@@ -213,7 +213,12 @@ Thirst
 <div id="encounterText"></div>
 
 <div
-    id="message"
+    id="combatResultBox"
+    class="message hidden">
+</div>
+
+<div
+    id="gainResultBox"
     class="message hidden">
 </div>
 
@@ -222,13 +227,13 @@ Thirst
 <div class="buttons">
 
 <button
-    class="fight"
+    class="Let's Go!"
     onclick="fight()">
 ⚔️ FIGHT
 </button>
 
 <button
-    class="run"
+    class="No way!"
     onclick="run()">
 🏃 RUN
 </button>
@@ -1298,18 +1303,15 @@ function newEncounter() {
     window.currentEncounter = encounter;
 
 
-    document
-        .getElementById("encounterTitle")
-        .innerText =
-        "Encounter " +
-        encounter.id;
-
 
     document
         .getElementById("encounterText")
         .innerText =
         encounter.description;
-
+    document
+        .getElementById("encounterText")
+        .innerText =
+        encounter.question;
 
     document
         .getElementById("message")
@@ -1336,10 +1338,10 @@ function fight() {
        YOUR EXCEL RANDOM SYSTEM
 
        Player:
-       Combat × random 0–9
+       Combat × random 1–10
 
        Zombie:
-       Combat × random 0–5
+       Combat × random 1–6
     */
 
     const playerRandom =
@@ -1417,183 +1419,189 @@ function fight() {
     }
 
 
-    updateScreen();
+ updateScreen();
 
 
-    /* =================================================
-       DEATH FROM COMBAT
-    ================================================= */
+/* =================================================
+   DEATH FROM COMBAT
+================================================= */
 
-    if (player.health <= 0) {
+if (player.health <= 0) {
 
-        gameOver();
+    gameOver();
 
-        return;
-    }
-
-
-    /* =================================================
-       COMBAT EXPERIENCE
-    ================================================= */
-
-    if (difference >= 0) {
-
-        player.combat =
-            Math.min(
-                MAX_COMBAT,
-                player.combat +
-                encounter.combatGain
-            );
-
-
-        showMessage(
-
-            encounter.fightMessage +
-
-            "\n\nYour Combat: " +
-            playerTotal +
-
-            "\nZombie Combat: " +
-            zombieTotal +
-
-            "\n\nYou lost " +
-            damage +
-            " Health." +
-
-            "\nHealth remaining: " +
-            player.health +
-
-            "\n\n+" +
-            encounter.combatGain +
-            " Combat."
-
-        );
-
-    } else {
-
-        const halfGain =
-            encounter.combatGain / 2;
-
-
-        player.combat =
-            Math.min(
-                MAX_COMBAT,
-                player.combat +
-                halfGain
-            );
-
-
-        showMessage(
-
-            "You barely survived." +
-
-            "\n\nYour Combat: " +
-            playerTotal +
-
-            "\nZombie Combat: " +
-            zombieTotal +
-
-            "\n\nYou lost " +
-            damage +
-            " Health." +
-
-            "\nHealth remaining: " +
-            player.health +
-
-            "\n\n+" +
-            halfGain +
-            " Combat."
-
-        );
-    }
-
-
-    /*
-       IMPORTANT:
-
-       Survival effects happen BEFORE
-       food and water discovery.
-    */
-
-    survivalEffects();
-
-
-    if (player.health <= 0) {
-
-        gameOver();
-
-        return;
-    }
-
-
-    /* =================================================
-       DISCOVERY AFTER SURVIVAL
-    ================================================= */
-
-    let discovery = encounter.discoveryMessage;
-
-
-    if (encounter.food > 0) {
-
-        player.hunger =
-            Math.max(
-                0,
-                player.hunger -
-                encounter.food
-            );
-
-
-        discovery +=
-            "\n\n🍖 Food found: " +
-            encounter.food;
-    }
-
-
-    if (encounter.water > 0) {
-
-        player.thirst =
-            Math.max(
-                0,
-                player.thirst -
-                encounter.water
-            );
-
-
-        discovery +=
-            "\n💧 Water found: " +
-            encounter.water;
-    }
-
-
-    if (
-        encounter.food === 0 &&
-        encounter.water === 0
-    ) {
-
-        discovery +=
-            "\n\nNothing useful was found.";
-    }
-
-
-    showMessage(
-        document
-        .getElementById("message")
-        .innerText +
-        "\n\n" +
-        discovery
-    );
-
-
-    updateScreen();
-
-
-    nextTurn();
+    return;
 }
 
 
-/* =====================================================
-   RUN
-===================================================== */
+/* =================================================
+   COMBAT EXPERIENCE
+================================================= */
+
+let combatGain = 0;
+
+let combatResultTitle = "";
+
+
+if (difference >= 0) {
+
+    combatGain =
+        encounter.combatGain;
+
+
+    player.combat =
+        Math.min(
+            MAX_COMBAT,
+            player.combat +
+            combatGain
+        );
+
+
+    combatResultTitle =
+        "⚔️ YOU SURVIVED";
+
+
+} else {
+
+    combatGain =
+        encounter.combatGain / 2;
+
+
+    player.combat =
+        Math.min(
+            MAX_COMBAT,
+            player.combat +
+            combatGain
+        );
+
+
+    combatResultTitle =
+        "⚠️ BARELY SURVIVED";
+}
+
+
+/* =================================================
+   BOX 1 — COMBAT RESULT
+================================================= */
+
+const combatBox =
+    document.getElementById("combatResultBox");
+
+
+combatBox.innerHTML = `
+
+    <h2>${combatResultTitle}</h2>
+
+    <p>
+        ${encounter.fightMessage}
+    </p>
+
+    <p>
+        Your Combat: <strong>${Math.floor(playerTotal)}</strong><br>
+        Zombie Combat: <strong>${Math.floor(zombieTotal)}</strong>
+    </p>
+
+    <p>
+        You lost <strong>${damage}</strong> Health.<br>
+        Health remaining: <strong>${player.health}</strong>
+    </p>
+
+`;
+
+
+combatBox.classList.remove("hidden");
+
+
+/*
+   IMPORTANT:
+
+   Survival effects happen BEFORE
+   food and water discovery.
+*/
+
+survivalEffects();
+
+
+if (player.health <= 0) {
+
+    gameOver();
+
+    return;
+}
+
+
+/* =================================================
+   DISCOVERY AFTER SURVIVAL
+================================================= */
+let discovery = encounter.discoveryMessage;
+
+
+/* =================================================
+   FOOD
+================================================= */
+
+if (encounter.food > 0) {
+
+    player.hunger =
+        Math.max(
+            0,
+            player.hunger -
+            encounter.food
+        );
+
+}
+
+
+/* =================================================
+   WATER
+================================================= */
+
+if (encounter.water > 0) {
+
+    player.thirst =
+        Math.max(
+            0,
+            player.thirst -
+            encounter.water
+        );
+
+}
+
+
+/* =================================================
+   BOX 2 — DISCOVERY / GAINS
+================================================= */
+
+const gainBox =
+    document.getElementById("gainResultBox");
+
+
+gainBox.innerHTML = `
+
+    <p>
+        ${discovery}
+    </p>
+
+    <p>
+        ⚔️ Combat <strong>+${combatGain}</strong><br>
+        🍖 Food <strong>${formatResource(encounter.food)}</strong><br>
+        💧 Water <strong>${formatResource(encounter.water)}</strong>
+    </p>
+
+`;
+
+
+gainBox.classList.remove("hidden");
+
+
+/* =================================================
+   UPDATE SCREEN
+================================================= */
+
+updateScreen();
+
+
+nextTurn();
 
 function run() {
 
@@ -1634,7 +1642,14 @@ function run() {
 /* =====================================================
    SURVIVAL EFFECTS
 ===================================================== */
+function formatResource(value) {
 
+    if (value > 0) {
+        return "+" + value;
+    }
+
+    return value;
+}
 function survivalEffects() {
 
     /*
@@ -1944,18 +1959,22 @@ function updateScreen() {
         player.thirst;
 
 
-    document
-        .getElementById("dayDisplay")
-        .innerText =
+const timesOfDay = [
+    "MORNING",
+    "AFTERNOON",
+    "NIGHT"
+];
 
-        "Day " +
-        player.day +
+const time =
+    timesOfDay[player.encounter - 1];
 
-        " — Encounter " +
-        player.encounter +
-        "/" +
-        ENCOUNTERS_PER_DAY;
-}
+document
+    .getElementById("dayDisplay")
+    .innerText =
+    "DAY " +
+    player.day +
+    " — " +
+    time;
 
 </script>
 
