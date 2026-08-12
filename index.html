@@ -227,7 +227,7 @@ Thirst
     id="gainResultBox"
     class="message hidden">
 </div>
-</div>
+
 
 <div class="buttons">
 
@@ -1309,21 +1309,31 @@ function newEncounter() {
 
 
 
-    document
-        .getElementById("encounterText")
-        .innerText =
-        encounter.description;
-    document
-        .getElementById("encounterText")
-        .innerText =
-        encounter.question;
+document
+    .getElementById("encounterText")
+    .innerText =
+    encounter.description +
+    "\n\n" +
+    encounter.question;
 
     document
         .getElementById("message")
         .classList
         .add("hidden");
 }
+document
+    .getElementById("combatResultBox")
+    .classList
+    .add("hidden");
 
+document
+    .getElementById("gainResultBox")
+    .classList
+    .add("hidden");
+
+/* =====================================================
+   FIGHT
+===================================================== */
 
 /* =====================================================
    FIGHT
@@ -1333,7 +1343,6 @@ function fight() {
 
     const encounter =
         window.currentEncounter;
-
 
     const zombieCombat =
         encounter.zombieCombat;
@@ -1375,7 +1384,7 @@ function fight() {
 
 
     /* =================================================
-       YOUR DAMAGE TABLE
+       DAMAGE TABLE
     ================================================= */
 
     if (difference >= 20) {
@@ -1420,202 +1429,262 @@ function fight() {
     player.health -= damage;
 
     if (player.health < 0) {
+
         player.health = 0;
     }
 
 
- updateScreen();
+    updateScreen();
 
 
-/* =================================================
-   DEATH FROM COMBAT
-================================================= */
+    /* =================================================
+       DEATH FROM COMBAT
+    ================================================= */
 
-if (player.health <= 0) {
+    if (player.health <= 0) {
 
-    gameOver();
+        gameOver();
 
-    return;
+        return;
+    }
+
+
+    /* =================================================
+       COMBAT EXPERIENCE
+    ================================================= */
+
+    let combatGain = 0;
+
+    let combatResultTitle = "";
+
+
+    if (difference >= 0) {
+
+        combatGain =
+            encounter.combatGain;
+
+
+        player.combat =
+            Math.min(
+                MAX_COMBAT,
+                player.combat +
+                combatGain
+            );
+
+
+        combatResultTitle =
+            "⚔️ YOU SURVIVED";
+
+
+    } else {
+
+        /*
+           Half combat experience when
+           barely surviving.
+
+           FLOOR keeps combat as an integer.
+        */
+
+        combatGain =
+            Math.floor(
+                encounter.combatGain / 2
+            );
+
+
+        player.combat =
+            Math.min(
+                MAX_COMBAT,
+                player.combat +
+                combatGain
+            );
+
+
+        combatResultTitle =
+            "⚠️ BARELY SURVIVED";
+    }
+
+
+    /* =================================================
+       BOX 1 — COMBAT RESULT
+    ================================================= */
+
+    const combatBox =
+        document.getElementById(
+            "combatResultBox"
+        );
+
+
+    combatBox.innerHTML = `
+
+        <h2>${combatResultTitle}</h2>
+
+        <p>
+            ${encounter.fightMessage}
+        </p>
+
+        <p>
+            Your Combat:
+            <strong>${Math.floor(playerTotal)}</strong>
+            <br>
+
+            Zombie Combat:
+            <strong>${Math.floor(zombieTotal)}</strong>
+        </p>
+
+        <p>
+            You lost
+            <strong>${damage}</strong>
+            Health.
+            <br>
+
+            Health remaining:
+            <strong>${player.health}</strong>
+        </p>
+
+    `;
+
+
+    combatBox.classList.remove("hidden");
+
+
+    /*
+       IMPORTANT:
+
+       Hunger/thirst penalties happen BEFORE
+       food and water discovery.
+    */
+
+    survivalEffects();
+
+
+    /* =================================================
+       DEATH FROM HUNGER / THIRST
+    ================================================= */
+
+    if (player.health <= 0) {
+
+        gameOver();
+
+        return;
+    }
+
+
+    /* =================================================
+       DISCOVERY AFTER SURVIVAL
+    ================================================= */
+
+    let discovery =
+        encounter.discoveryMessage;
+
+
+    /* =================================================
+       FOOD
+    ================================================= */
+
+    if (encounter.food > 0) {
+
+        player.hunger =
+            Math.max(
+                0,
+                player.hunger -
+                encounter.food
+            );
+
+    } else if (encounter.food < 0) {
+
+        player.hunger =
+            Math.min(
+                100,
+                player.hunger +
+                Math.abs(encounter.food)
+            );
+    }
+
+
+    /* =================================================
+       WATER
+    ================================================= */
+
+    if (encounter.water > 0) {
+
+        player.thirst =
+            Math.max(
+                0,
+                player.thirst -
+                encounter.water
+            );
+
+    } else if (encounter.water < 0) {
+
+        player.thirst =
+            Math.min(
+                100,
+                player.thirst +
+                Math.abs(encounter.water)
+            );
+    }
+
+
+    /* =================================================
+       BOX 2 — DISCOVERY / GAINS
+    ================================================= */
+
+    const gainBox =
+        document.getElementById(
+            "gainResultBox"
+        );
+
+
+    gainBox.innerHTML = `
+
+        <p>
+            ${discovery}
+        </p>
+
+        <p>
+            ⚔️ Combat
+            <strong>+${combatGain}</strong>
+            <br>
+
+            🍖 Food
+            <strong>${formatResource(encounter.food)}</strong>
+            <br>
+
+            💧 Water
+            <strong>${formatResource(encounter.water)}</strong>
+        </p>
+
+    `;
+
+
+    gainBox.classList.remove("hidden");
+
+
+    /* =================================================
+       UPDATE SCREEN
+    ================================================= */
+
+    updateScreen();
+
+
+    /* =================================================
+       NEXT TURN
+    ================================================= */
+
+    nextTurn();
+
 }
 
 
-/* =================================================
-   COMBAT EXPERIENCE
-================================================= */
+function formatResource(value) {
 
-let combatGain = 0;
+    if (value > 0) {
 
-let combatResultTitle = "";
+        return "+" + value;
+    }
 
-
-if (difference >= 0) {
-
-    combatGain =
-        encounter.combatGain;
-
-
-    player.combat =
-        Math.min(
-            MAX_COMBAT,
-            player.combat +
-            combatGain
-        );
-
-
-    combatResultTitle =
-        "⚔️ YOU SURVIVED";
-
-
-} else {
-
-    combatGain =
-        encounter.combatGain / 2;
-
-
-    player.combat =
-        Math.min(
-            MAX_COMBAT,
-            player.combat +
-            combatGain
-        );
-
-
-    combatResultTitle =
-        "⚠️ BARELY SURVIVED";
+    return value;
 }
-
-
-/* =================================================
-   BOX 1 — COMBAT RESULT
-================================================= */
-
-const combatBox =
-    document.getElementById("combatResultBox");
-
-
-combatBox.innerHTML = `
-
-    <h2>${combatResultTitle}</h2>
-
-    <p>
-        ${encounter.fightMessage}
-    </p>
-
-    <p>
-        Your Combat: <strong>${Math.floor(playerTotal)}</strong><br>
-        Zombie Combat: <strong>${Math.floor(zombieTotal)}</strong>
-    </p>
-
-    <p>
-        You lost <strong>${damage}</strong> Health.<br>
-        Health remaining: <strong>${player.health}</strong>
-    </p>
-
-`;
-
-
-combatBox.classList.remove("hidden");
-
-
-/*
-   IMPORTANT:
-
-   Survival effects happen BEFORE
-   food and water discovery.
-*/
-
-survivalEffects();
-
-
-if (player.health <= 0) {
-
-    gameOver();
-
-    return;
-}
-
-
-/* =================================================
-   DISCOVERY AFTER SURVIVAL
-================================================= */
-let discovery = encounter.discoveryMessage;
-
-
-/* =================================================
-   FOOD
-================================================= */
-
-if (encounter.food > 0) {
-
-    player.hunger =
-        Math.max(
-            0,
-            player.hunger -
-            encounter.food
-        );
-
-} else if (encounter.food < 0) {
-
-    player.hunger =
-        Math.min(
-            100,
-            player.hunger +
-            Math.abs(encounter.food)
-        );
-
-}
-
-
-/* =================================================
-   WATER
-================================================= */
-
-if (encounter.water > 0) {
-
-    player.thirst =
-        Math.max(
-            0,
-            player.thirst -
-            encounter.water
-        );
-
-} else if (encounter.water < 0) {
-
-    player.thirst =
-        Math.min(
-            100,
-            player.thirst +
-            Math.abs(encounter.water)
-        );
-
-}
-
-/* =================================================
-   BOX 2 — DISCOVERY / GAINS
-================================================= */
-
-const gainBox =
-    document.getElementById("gainResultBox");
-
-
-gainBox.innerHTML = `
-
-    <p>
-        ${discovery}
-    </p>
-
-    <p>
-        ⚔️ Combat <strong>+${combatGain}</strong><br>
-        🍖 Food <strong>${formatResource(encounter.food)}</strong><br>
-        💧 Water <strong>${formatResource(encounter.water)}</strong>
-    </p>
-
-`;
-
-
-gainBox.classList.remove("hidden");
-
-
 /* =================================================
    UPDATE SCREEN
 ================================================= */
