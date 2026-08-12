@@ -318,6 +318,7 @@ let overlayStep = 0;
 let combatHTML = "";
 
 let gainHTML = "";
+let survivalHTML = "";
 
 /* =====================================================
    TEMPORARY ENCOUNTER DATABASE
@@ -1721,26 +1722,10 @@ updateScreen();
 nextTurn();
 
 function run() {
+
     document.querySelector(".buttons").style.display = "none";
-    const encounter =
-        window.currentEncounter;
-
-
-    showMessage(
-
-        "You decided to run.\n\n" +
-
-        "\n\nYou continue your journey."
-
-    );
-
-
-    /*
-       Running still consumes survival.
-    */
 
     survivalEffects();
-
 
     if (player.health <= 0) {
 
@@ -1749,8 +1734,27 @@ function run() {
         return;
     }
 
+    document
+        .getElementById("overlay")
+        .classList
+        .remove("hidden");
 
-    nextTurn();
+    document
+        .getElementById("overlayText")
+        .innerHTML = `
+            <h2>🏃 YOU RAN</h2>
+
+            <p>
+                You decide the risk isn't worth it.
+            </p>
+
+            <p>
+                You keep moving down the road,
+                hoping to find something safer.
+            </p>
+        `;
+
+    overlayStep = 99;
 }
 
 function overlayContinue() {
@@ -1769,6 +1773,48 @@ function overlayContinue() {
 
     if (overlayStep === 2) {
 
+        if (survivalHTML !== "") {
+
+            document
+                .getElementById("overlayText")
+                .innerHTML =
+                survivalHTML;
+
+            overlayStep = 3;
+
+            return;
+        }
+
+        document
+            .getElementById("overlay")
+            .classList
+            .add("hidden");
+
+        overlayStep = 0;
+
+        nextTurn();
+
+        return;
+    }
+
+    if (overlayStep === 3) {
+
+        survivalHTML = "";
+
+        document
+            .getElementById("overlay")
+            .classList
+            .add("hidden");
+
+        overlayStep = 0;
+
+        nextTurn();
+
+        return;
+    }
+
+    if (overlayStep === 99) {
+
         document
             .getElementById("overlay")
             .classList
@@ -1779,8 +1825,6 @@ function overlayContinue() {
         nextTurn();
     }
 }
-
-
 
 /* =====================================================
    SURVIVAL EFFECTS
@@ -1868,27 +1912,24 @@ function survivalEffects() {
         }
 
 
-        showMessage(
+        survivalHTML = `
+    <h2>⚠️ THE JOURNEY IS TAKING ITS TOLL</h2>
 
-            "THE JOURNEY IS TAKING ITS TOLL\n\n" +
+    <p>
+        Hunger: -${hungerPenalty} Health
+        <br>
+        Thirst: -${thirstPenalty} Health
+    </p>
 
-            "Hunger: -" +
-            hungerPenalty +
-            " Health\n" +
+    <p>
+        Total: -${totalPenalty} Health
+    </p>
 
-            "Thirst: -" +
-            thirstPenalty +
-            " Health\n\n" +
-
-            "Total: -" +
-            totalPenalty +
-            " Health\n\n" +
-
-            "Health remaining: " +
-            player.health
-
-        );
-    }
+    <p>
+        Health Remaining:
+        <strong>${player.health}</strong>
+    </p>
+`;
 
 
     updateScreen();
