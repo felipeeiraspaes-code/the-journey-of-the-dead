@@ -1549,6 +1549,15 @@ if (encounter.food > 0) {
             encounter.food
         );
 
+} else if (encounter.food < 0) {
+
+    player.hunger =
+        Math.min(
+            100,
+            player.hunger +
+            Math.abs(encounter.food)
+        );
+
 }
 
 
@@ -1565,8 +1574,16 @@ if (encounter.water > 0) {
             encounter.water
         );
 
-}
+} else if (encounter.water < 0) {
 
+    player.thirst =
+        Math.min(
+            100,
+            player.thirst +
+            Math.abs(encounter.water)
+        );
+
+}
 
 /* =================================================
    BOX 2 — DISCOVERY / GAINS
