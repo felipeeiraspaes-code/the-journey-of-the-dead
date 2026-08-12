@@ -303,66 +303,912 @@ const encounters = [
 
     {
         id: 1,
-        description:
-            "A lone walker stands in the road.",
+        code: "WoodsZ",
+        description: "You sit a bit to rest on the woods and see a lonely Walker coming your way.",
         zombieCombat: 3,
         food: 0,
         water: 0,
         combatGain: 1,
-        fightMessage:
-            "You take down the walker.",
-        discoveryMessage:
-            "You find nothing useful.",
-        decisionMessage:
-            "Do you fight or run?"
+        fightMessage: "Just a lonely walker…",
+        discoveryMessage: "Keep moving…",
+        question: "Take him out?"
     },
 
     {
         id: 2,
-        description:
-            "Several dead wander between abandoned cars.",
-        zombieCombat: 8,
+        code: "Road",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 10,
         food: 0,
         water: 0,
-        combatGain: 2,
-        fightMessage:
-            "The group is down.",
-        discoveryMessage:
-            "You search the cars but find nothing useful.",
-        decisionMessage:
-            "Do you fight or run?"
+        combatGain: 4,
+        fightMessage: "They attack you as you pass by…",
+        discoveryMessage: "Keep moving…",
+        question: "Go around them?"
     },
 
     {
         id: 3,
-        description:
-            "You spot what looks like a single zombie.",
-        zombieCombat: 14,
-        food: 4,
+        code: "CampZ",
+        description: "You reach a campsite, it has one Walker that sets free from his tent.",
+        zombieCombat: 18,
+        food: 0,
         water: 0,
-        combatGain: 3,
-        fightMessage:
-            "You survive the fight.",
-        discoveryMessage:
-            "After the fight, you discover some food.",
-        decisionMessage:
-            "Do you fight or run?"
+        combatGain: 8,
+        fightMessage: "You were ambushed! Hidden group to kill!",
+        discoveryMessage: "Only some old clothes an photos...",
+        question: "Check the camp?"
     },
 
     {
         id: 4,
-        description:
-            "You hear hundreds of dead moving nearby.",
-        zombieCombat: 35,
+        code: "HouseZ",
+        description: "You reach a abandoned house, it seems quiet, should you stop to find supplies?",
+        zombieCombat: 18,
+        food: 0,
+        water: 0,
+        combatGain: 8,
+        fightMessage: "You were ambushed! Hidden group to kill!",
+        discoveryMessage: "Nothing useful… got to keep moving…",
+        question: "Check the house?"
+    },
+
+    {
+        id: 5,
+        code: "Horde",
+        description: "YOU SEE THE HORDE AGAIN. RUN FOR YOUR LIFE!!",
+        zombieCombat: 150,
+        food: 0,
+        water: 0,
+        combatGain: 24,
+        fightMessage: "THIS IS HOW YOU DIED",
+        discoveryMessage: "What was I thinking…",
+        question: "Take them on?"
+    },
+
+    {
+        id: 6,
+        code: "WoodsZW",
+        description: "You sit a bit to rest on the woods and see a lonely Walker coming your way.",
+        zombieCombat: 3,
+        food: 0,
+        water: 4,
+        combatGain: 1,
+        fightMessage: "Just a lonely walker…",
+        discoveryMessage: "Found a water bottle, nice!",
+        question: "Take him out?"
+    },
+
+    {
+        id: 7,
+        code: "WoodsZF",
+        description: "You sit a bit to rest on the woods and see a lonely Walker coming your way.",
+        zombieCombat: 3,
+        food: 3,
+        water: 0,
+        combatGain: 1,
+        fightMessage: "Just a lonely walker…",
+        discoveryMessage: "Canned tuna! Lucky day!",
+        question: "Take him out?"
+    },
+
+    {
+        id: 8,
+        code: "Road W",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 0,
+        food: 3,
+        water: 0,
+        combatGain: 0,
+        fightMessage: "You manage to go round them easily",
+        discoveryMessage: "Found some fruits on the detour, nice!",
+        question: "Go around them?"
+    },
+
+    {
+        id: 9,
+        code: "Road W",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 0,
+        food: 0,
+        water: 0,
+        combatGain: 0,
+        fightMessage: "You manage to go round them easily",
+        discoveryMessage: "Easy stuff!",
+        question: "Go around them?"
+    },
+
+    {
+        id: 10,
+        code: "Road W",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 10,
+        food: 0,
+        water: 10,
+        combatGain: 4,
+        fightMessage: "They attack you as you pass by…",
+        discoveryMessage: "They were sure to keep some water around, thank you!",
+        question: "Go around them?"
+    },
+
+    {
+        id: 11,
+        code: "RoadF",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 10,
+        food: 8,
+        water: 0,
+        combatGain: 4,
+        fightMessage: "They attack you as you pass by…",
+        discoveryMessage: "They died with a couple snacks… Shame… For them…",
+        question: "Go around them?"
+    },
+
+    {
+        id: 12,
+        code: "CampZW",
+        description: "You reach a campsite, it has one Walker that sets free from his tent.",
+        zombieCombat: 18,
+        food: 0,
+        water: 4,
+        combatGain: 8,
+        fightMessage: "You were ambushed! Hidden group to kill!",
+        discoveryMessage: "All this for a water bottle…",
+        question: "Check the camp?"
+    },
+
+    {
+        id: 13,
+        code: "CampZF",
+        description: "You reach a campsite, it has one Walker that sets free from his tent.",
+        zombieCombat: 18,
+        food: 6,
+        water: 0,
+        combatGain: 8,
+        fightMessage: "You were ambushed! Hidden group to kill!",
+        discoveryMessage: "All these walkers and only canned beans…",
+        question: "Check the camp?"
+    },
+
+    {
+        id: 14,
+        code: "CampZFW",
+        description: "You reach a campsite, it has one Walker that sets free from his tent.",
+        zombieCombat: 18,
+        food: 6,
+        water: 8,
+        combatGain: 8,
+        fightMessage: "You were ambushed! Hidden group to kill!",
+        discoveryMessage: "Hidden bastards, at least I can catch a break now!",
+        question: "Check the camp?"
+    },
+
+    {
+        id: 15,
+        code: "Road FW",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 10,
+        food: 8,
+        water: 10,
+        combatGain: 4,
+        fightMessage: "They attack you as you pass by…",
+        discoveryMessage: "Filled backpacks! Nicee!!",
+        question: "Go around them?"
+    },
+
+    {
+        id: 16,
+        code: "HouseZW",
+        description: "You reach a abandoned house, it seems quiet, should you stop to find supplies?",
+        zombieCombat: 18,
+        food: 0,
+        water: 20,
+        combatGain: 8,
+        fightMessage: "You were ambushed! Hidden group to kill!",
+        discoveryMessage: "Some running water for a change!!",
+        question: "Check the house?"
+    },
+
+    {
+        id: 17,
+        code: "HouseZF",
+        description: "You reach a abandoned house, it seems quiet, should you stop to find supplies?",
+        zombieCombat: 18,
+        food: 16,
+        water: 0,
+        combatGain: 8,
+        fightMessage: "You were ambushed! Hidden group to kill!",
+        discoveryMessage: "Nice food supply! No water though…",
+        question: "Check the house?"
+    },
+
+    {
+        id: 18,
+        code: "HouseZFW",
+        description: "You reach a abandoned house, it seems quiet, should you stop to find supplies?",
+        zombieCombat: 18,
+        food: 20,
+        water: 25,
+        combatGain: 8,
+        fightMessage: "You were ambushed! Hidden group to kill!",
+        discoveryMessage: "Food and water!! At least something in return…",
+        question: "Check the house?"
+    },
+
+    {
+        id: 19,
+        code: "HouseW",
+        description: "You reach a abandoned house, it seems quiet, should you stop to find supplies?",
+        zombieCombat: 0,
+        food: 0,
+        water: 20,
+        combatGain: 0,
+        fightMessage: "Empty house! Jackpot !",
+        discoveryMessage: "Some running water for a change!!",
+        question: "Check the house?"
+    },
+
+    {
+        id: 20,
+        code: "HouseF",
+        description: "You reach a abandoned house, it seems quiet, should you stop to find supplies?",
+        zombieCombat: 0,
+        food: 20,
+        water: 0,
+        combatGain: 0,
+        fightMessage: "Empty house! Jackpot !",
+        discoveryMessage: "Nice food supply! No water though…",
+        question: "Check the house?"
+    },
+
+    {
+        id: 21,
+        code: "HouseFW",
+        description: "You reach a abandoned house, it seems quiet, should you stop to find supplies?",
+        zombieCombat: 0,
+        food: 20,
+        water: 20,
+        combatGain: 0,
+        fightMessage: "Empty house! Jackpot !",
+        discoveryMessage: "This is heaven, food and water!!",
+        question: "Check the house?"
+    },
+
+    {
+        id: 22,
+        code: "CampZ",
+        description: "You reach a campsite, it has one Walker that sets free from his tent.",
+        zombieCombat: 3,
+        food: 0,
+        water: 0,
+        combatGain: 1,
+        fightMessage: "Just a lonely walker…",
+        discoveryMessage: "Some coins, those don't really help…",
+        question: "Check the camp?"
+    },
+
+    {
+        id: 23,
+        code: "HouseW",
+        description: "You reach a abandoned house, it seems quiet, should you stop to find supplies?",
+        zombieCombat: 0,
+        food: 0,
+        water: 20,
+        combatGain: 0,
+        fightMessage: "Empty house! Jackpot !",
+        discoveryMessage: "Some running water for a change!!",
+        question: "Check the house?"
+    },
+
+    {
+        id: 24,
+        code: "HouseF",
+        description: "You reach a abandoned house, it seems quiet, should you stop to find supplies?",
+        zombieCombat: 0,
+        food: 20,
+        water: 0,
+        combatGain: 0,
+        fightMessage: "Empty house! Jackpot !",
+        discoveryMessage: "Nice food supply! No water though…",
+        question: "Check the house?"
+    },
+
+    {
+        id: 25,
+        code: "HouseFW",
+        description: "You reach a abandoned house, it seems quiet, should you stop to find supplies?",
+        zombieCombat: 0,
+        food: 20,
+        water: 20,
+        combatGain: 0,
+        fightMessage: "Empty house! Jackpot !",
+        discoveryMessage: "This is heaven, food and water!!",
+        question: "Check the house?"
+    },
+
+    {
+        id: 26,
+        code: "WoodsZ",
+        description: "You sit a bit to rest on the woods and see a lonely Walker coming your way.",
+        zombieCombat: 3,
+        food: 0,
+        water: 0,
+        combatGain: 1,
+        fightMessage: "Just a lonely walker…",
+        discoveryMessage: "Empty walker, damn.",
+        question: "Take him out?"
+    },
+
+    {
+        id: 27,
+        code: "WoodsZW",
+        description: "You sit a bit to rest on the woods and see a lonely Walker coming your way.",
+        zombieCombat: 3,
+        food: 0,
+        water: 4,
+        combatGain: 1,
+        fightMessage: "Just a lonely walker…",
+        discoveryMessage: "Found a water bottle, nice!",
+        question: "Take him out?"
+    },
+
+    {
+        id: 28,
+        code: "WoodsZF",
+        description: "You sit a bit to rest on the woods and see a lonely Walker coming your way.",
+        zombieCombat: 3,
+        food: 3,
+        water: 0,
+        combatGain: 1,
+        fightMessage: "Just a lonely walker…",
+        discoveryMessage: "Canned tuna! Lucky day!",
+        question: "Take him out?"
+    },
+
+    {
+        id: 29,
+        code: "CampZ",
+        description: "You reach a campsite, it has one Walker that sets free from his tent.",
+        zombieCombat: 3,
+        food: 0,
+        water: 0,
+        combatGain: 1,
+        fightMessage: "Just a lonely walker…",
+        discoveryMessage: "Some coins, those don't really help…",
+        question: "Check the camp?"
+    },
+
+    {
+        id: 30,
+        code: "Road",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 10,
+        food: 0,
+        water: 0,
+        combatGain: 4,
+        fightMessage: "They attack you as you pass by…",
+        discoveryMessage: "Empty walkers, damn.",
+        question: "Go around them?"
+    },
+
+    {
+        id: 31,
+        code: "Road W",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 10,
+        food: 0,
+        water: 10,
+        combatGain: 4,
+        fightMessage: "They attack you as you pass by…",
+        discoveryMessage: "They were sure to keep some water around, thank you!",
+        question: "Go around them?"
+    },
+
+    {
+        id: 32,
+        code: "RoadF",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 10,
+        food: 8,
+        water: 0,
+        combatGain: 4,
+        fightMessage: "They attack you as you pass by…",
+        discoveryMessage: "They died with a couple snacks… Shame… For them…",
+        question: "Go around them?"
+    },
+
+    {
+        id: 33,
+        code: "Road FW",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 10,
+        food: 8,
+        water: 10,
+        combatGain: 4,
+        fightMessage: "They attack you as you pass by…",
+        discoveryMessage: "Filled backpacks! Nicee!!",
+        question: "Go around them?"
+    },
+
+    {
+        id: 34,
+        code: "CarW",
+        description: "You see a car up ahead, should you stop to find supplies?",
+        zombieCombat: 0,
+        food: 0,
+        water: 20,
+        combatGain: 0,
+        fightMessage: "Full trunk! Jackpot !",
+        discoveryMessage: "A water gallon!! Too much to carry, but enough to fill the bottles!",
+        question: "Check the car?"
+    },
+
+    {
+        id: 35,
+        code: "CarF",
+        description: "You see a car up ahead, should you stop to find supplies?",
+        zombieCombat: 0,
+        food: 20,
+        water: 0,
+        combatGain: 0,
+        fightMessage: "Full trunk! Jackpot !",
+        discoveryMessage: "Nice food supply! No water though…",
+        question: "Check the car?"
+    },
+
+    {
+        id: 36,
+        code: "CarFW",
+        description: "You see a car up ahead, should you stop to find supplies?",
+        zombieCombat: 0,
+        food: 20,
+        water: 20,
+        combatGain: 0,
+        fightMessage: "Full trunk! Jackpot !",
+        discoveryMessage: "This is heaven, food and water!!",
+        question: "Check the car?"
+    },
+
+    {
+        id: 37,
+        code: "CarZ",
+        description: "You see a car up ahead, should you stop to find supplies?",
+        zombieCombat: 3,
+        food: 0,
+        water: 0,
+        combatGain: 1,
+        fightMessage: "Just a lonely walker inside…",
+        discoveryMessage: "He surely was running from something…",
+        question: "Check the car?"
+    },
+
+    {
+        id: 38,
+        code: "CarZW",
+        description: "You see a car up ahead, should you stop to find supplies?",
+        zombieCombat: 3,
+        food: 0,
+        water: 4,
+        combatGain: 1,
+        fightMessage: "Just a lonely walker inside…",
+        discoveryMessage: "Found a water bottle, nice!",
+        question: "Check the car?"
+    },
+
+    {
+        id: 39,
+        code: "CarZF",
+        description: "You see a car up ahead, should you stop to find supplies?",
+        zombieCombat: 3,
+        food: 3,
+        water: 0,
+        combatGain: 1,
+        fightMessage: "Just a lonely walker inside…",
+        discoveryMessage: "Canned tuna! Lucky day!",
+        question: "Check the car?"
+    },
+
+    {
+        id: 40,
+        code: "CampZ",
+        description: "You reach a campsite, it has one Walker that sets free from his tent.",
+        zombieCombat: 3,
+        food: 0,
+        water: 0,
+        combatGain: 1,
+        fightMessage: "Just a lonely walker…",
+        discoveryMessage: "Some coins, those don't really help…",
+        question: "Check the camp?"
+    },
+
+    {
+        id: 41,
+        code: "Road",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 10,
+        food: 0,
+        water: 0,
+        combatGain: 4,
+        fightMessage: "They attack you as you pass by…",
+        discoveryMessage: "Empty walkers, damn.",
+        question: "Go around them?"
+    },
+
+    {
+        id: 42,
+        code: "Road W",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 10,
+        food: 0,
+        water: 10,
+        combatGain: 4,
+        fightMessage: "They attack you as you pass by…",
+        discoveryMessage: "They were sure to keep some water around, thank you!",
+        question: "Go around them?"
+    },
+
+    {
+        id: 43,
+        code: "RoadF",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 10,
+        food: 8,
+        water: 0,
+        combatGain: 4,
+        fightMessage: "They attack you as you pass by…",
+        discoveryMessage: "They died with a couple snacks… Shame… For them…",
+        question: "Go around them?"
+    },
+
+    {
+        id: 44,
+        code: "Road FW",
+        description: "You see a small group of walkers down the road.",
+        zombieCombat: 10,
+        food: 8,
+        water: 10,
+        combatGain: 4,
+        fightMessage: "They attack you as you pass by…",
+        discoveryMessage: "Filled backpacks! Nicee!!",
+        question: "Go around them?"
+    },
+
+    {
+        id: 45,
+        code: "SurvivorR",
+        description: "You see a man wounded, trying to escape a zombie.",
+        zombieCombat: 3,
+        food: -10,
+        water: -10,
+        combatGain: 0,
+        fightMessage: "You jump in front of him and attack the zombie!",
+        discoveryMessage: "It was all an act, he robs you of you resources… Bad people left…",
+        question: "Help him?"
+    },
+
+    {
+        id: 46,
+        code: "SurvivorF",
+        description: "You see a man wounded, trying to escape a zombie.",
+        zombieCombat: 3,
+        food: 10,
+        water: 0,
+        combatGain: 1,
+        fightMessage: "You jump in front of him and attack the zombie!",
+        discoveryMessage: "The man is greatful and gives you some food!",
+        question: "Help him?"
+    },
+
+    {
+        id: 47,
+        code: "SurvivorW",
+        description: "You see a man wounded, trying to escape a zombie.",
+        zombieCombat: 3,
+        food: 0,
+        water: 10,
+        combatGain: 1,
+        fightMessage: "You jump in front of him and attack the zombie!",
+        discoveryMessage: "The man is greatful and gives you some water!",
+        question: "Help him?"
+    },
+
+    {
+        id: 48,
+        code: "SurvivorFW",
+        description: "You see a man wounded, trying to escape a zombie.",
+        zombieCombat: 3,
+        food: 10,
+        water: 10,
+        combatGain: 1,
+        fightMessage: "You jump in front of him and attack the zombie!",
+        discoveryMessage: "The man is greatful and gives you some food and water!",
+        question: "Help him?"
+    },
+
+    {
+        id: 49,
+        code: "SurvivorR",
+        description: "You see a woman wounded, trying to escape a zombie.",
+        zombieCombat: 3,
+        food: -10,
+        water: -10,
+        combatGain: 0,
+        fightMessage: "You jump in front of her and attack the zombie!",
+        discoveryMessage: "It was all an act, she robs you of you resources… Bad people left…",
+        question: "Help her?"
+    },
+
+    {
+        id: 50,
+        code: "SurvivorF",
+        description: "You see a woman wounded, trying to escape a zombie.",
+        zombieCombat: 3,
+        food: 10,
+        water: 0,
+        combatGain: 1,
+        fightMessage: "You jump in front of her and attack the zombie!",
+        discoveryMessage: "The woman is greatful and gives you some food!",
+        question: "Help her?"
+    },
+
+    {
+        id: 51,
+        code: "SurvivorW",
+        description: "You see a woman wounded, trying to escape a zombie.",
+        zombieCombat: 3,
+        food: 0,
+        water: 10,
+        combatGain: 1,
+        fightMessage: "You jump in front of her and attack the zombie!",
+        discoveryMessage: "The woman is greatful and gives you some water!",
+        question: "Help her?"
+    },
+
+    {
+        id: 52,
+        code: "SurvivorFW",
+        description: "You see a woman wounded, trying to escape a zombie.",
+        zombieCombat: 3,
+        food: 10,
+        water: 10,
+        combatGain: 1,
+        fightMessage: "You jump in front of her and attack the zombie!",
+        discoveryMessage: "The woman is greatful and gives you some food and water!",
+        question: "Help her?"
+    },
+
+    {
+        id: 53,
+        code: "CarZF",
+        description: "You see a car up ahead, should you stop to find supplies?",
+        zombieCombat: 18,
+        food: 6,
+        water: 0,
+        combatGain: 8,
+        fightMessage: "The car alarm goes off!! You are surrounded!!",
+        discoveryMessage: "All these walkers and only canned beans…",
+        question: "Check the car?"
+    },
+
+    {
+        id: 54,
+        code: "CarZFW",
+        description: "You see a car up ahead, should you stop to find supplies?",
+        zombieCombat: 18,
+        food: 6,
+        water: 8,
+        combatGain: 8,
+        fightMessage: "The car alarm goes off!! You are surrounded!!",
+        discoveryMessage: "Hidden bastards, at least I can catch a break now!",
+        question: "Check the car?"
+    },
+
+    {
+        id: 55,
+        code: "CarZW",
+        description: "You see a car up ahead, should you stop to find supplies?",
+        zombieCombat: 18,
+        food: 0,
+        water: 4,
+        combatGain: 8,
+        fightMessage: "The car alarm goes off!! You are surrounded!!",
+        discoveryMessage: "All this for a water bottle…",
+        question: "Check the car?"
+    },
+
+    {
+        id: 56,
+        code: "CarZ",
+        description: "You see a car up ahead, should you stop to find supplies?",
+        zombieCombat: 18,
+        food: 0,
+        water: 0,
+        combatGain: 8,
+        fightMessage: "The car alarm goes off!! You are surrounded!!",
+        discoveryMessage: "All the trouble for an empty car...",
+        question: "Check the car?"
+    },
+
+    {
+        id: 57,
+        code: "PharmacyZ",
+        description: "You spot an abandoned pharmacy. The front door hangs open.",
+        zombieCombat: 8,
+        food: 0,
+        water: 0,
+        combatGain: 4,
+        fightMessage: "A walker stumbles out from behind the counter.",
+        discoveryMessage: "Only expired medicine... useless.",
+        question: "Search the pharmacy?"
+    },
+
+    {
+        id: 58,
+        code: "PharmacyF",
+        description: "You spot an abandoned pharmacy. The front door hangs open.",
+        zombieCombat: 8,
+        food: 5,
+        water: 0,
+        combatGain: 4,
+        fightMessage: "A walker stumbles out from behind the counter.",
+        discoveryMessage: "Found some energy bars near the register!",
+        question: "Search the pharmacy?"
+    },
+
+    {
+        id: 59,
+        code: "PharmacyW",
+        description: "You spot an abandoned pharmacy. The front door hangs open.",
+        zombieCombat: 8,
+        food: 0,
+        water: 8,
+        combatGain: 4,
+        fightMessage: "A walker stumbles out from behind the counter.",
+        discoveryMessage: "A few sealed water bottles survived.",
+        question: "Search the pharmacy?"
+    },
+
+    {
+        id: 60,
+        code: "PharmacyF",
+        description: "You spot an abandoned pharmacy. The front door hangs open.",
+        zombieCombat: 0,
+        food: 5,
+        water: 0,
+        combatGain: 0,
+        fightMessage: "No dead inside… Got to rest up…",
+        discoveryMessage: "Found some energy bars near the register!",
+        question: "Search the pharmacy?"
+    },
+
+    {
+        id: 61,
+        code: "PharmacyW",
+        description: "You spot an abandoned pharmacy. The front door hangs open.",
+        zombieCombat: 0,
+        food: 0,
+        water: 8,
+        combatGain: 0,
+        fightMessage: "No dead inside… Got to rest up…",
+        discoveryMessage: "A few sealed water bottles survived.",
+        question: "Search the pharmacy?"
+    },
+
+    {
+        id: 62,
+        code: "SchoolZ",
+        description: "You pass by an elementary school. The playground is silent.",
+        zombieCombat: 12,
         food: 0,
         water: 0,
         combatGain: 5,
-        fightMessage:
-            "Somehow, you survive.",
-        discoveryMessage:
-            "There is nothing useful here.",
-        decisionMessage:
-            "Do you fight or run?"
+        fightMessage: "Walkers pour from a classroom window!",
+        discoveryMessage: "Nothing useful inside...",
+        question: "Check the school?"
+    },
+
+    {
+        id: 63,
+        code: "SchoolFW",
+        description: "You pass by an elementary school. The playground is silent.",
+        zombieCombat: 12,
+        food: 10,
+        water: 10,
+        combatGain: 5,
+        fightMessage: "No one here… I hope the kids are okay…",
+        discoveryMessage: "The cafeteria still has supplies!",
+        question: "Check the school?"
+    },
+
+    {
+        id: 64,
+        code: "SchoolFW",
+        description: "You pass by an elementary school. The playground is silent.",
+        zombieCombat: 12,
+        food: 10,
+        water: 10,
+        combatGain: 5,
+        fightMessage: "Walkers pour from a classroom window!",
+        discoveryMessage: "The cafeteria still has supplies!",
+        question: "Check the school?"
+    },
+
+    {
+        id: 65,
+        code: "School",
+        description: "You pass by an elementary school. The playground is silent.",
+        zombieCombat: 0,
+        food: 0,
+        water: 0,
+        combatGain: 0,
+        fightMessage: "No one here… I hope the kids are okay…",
+        discoveryMessage: "The cafeteria still has supplies!",
+        question: "Check the school?"
+    },
+
+    {
+        id: 66,
+        code: "TruckF",
+        description: "A delivery truck blocks part of the road.",
+        zombieCombat: 0,
+        food: 15,
+        water: 0,
+        combatGain: 0,
+        fightMessage: "The truck is empty of walkers.",
+        discoveryMessage: "Boxes of canned food still remain!",
+        question: "Check the truck?"
+    },
+
+    {
+        id: 67,
+        code: "TruckW",
+        description: "A delivery truck blocks part of the road.",
+        zombieCombat: 0,
+        food: 0,
+        water: 15,
+        combatGain: 0,
+        fightMessage: "The truck is empty of walkers.",
+        discoveryMessage: "Several crates of bottled water survived.",
+        question: "Check the truck?"
+    },
+
+    {
+        id: 68,
+        code: "TruckW",
+        description: "A delivery truck blocks part of the road.",
+        zombieCombat: 0,
+        food: 0,
+        water: 0,
+        combatGain: 0,
+        fightMessage: "The truck is empty of walkers.",
+        discoveryMessage: "Just empty boxes…",
+        question: "Check the truck?"
+    },
+
+    {
+        id: 69,
+        code: "TruckW",
+        description: "A delivery truck blocks part of the road.",
+        zombieCombat: 16,
+        food: 0,
+        water: 0,
+        combatGain: 8,
+        fightMessage: "Too noisy!! Zombies surround the truck!",
+        discoveryMessage: "Just empty boxes…",
+        question: "Check the truck?"
+    },
+
+    {
+        id: 70,
+        code: "TruckW",
+        description: "A delivery truck blocks part of the road.",
+        zombieCombat: 16,
+        food: 5,
+        water: 5,
+        combatGain: 8,
+        fightMessage: "Too noisy!! Zombies surround the truck!",
+        discoveryMessage: "Some one has been here, but left some supplies!",
+        question: "Check the truck?"
     }
 
 ];
