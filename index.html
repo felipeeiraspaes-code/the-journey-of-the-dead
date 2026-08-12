@@ -1702,7 +1702,22 @@ function fight() {
     return;
 }
 
+function showOverlay(title, text, step) {
 
+    document
+        .getElementById("overlay")
+        .classList
+        .remove("hidden");
+
+    document
+        .getElementById("overlayText")
+        .innerHTML = `
+            <h2>${title}</h2>
+            <p>${text}</p>
+        `;
+
+    overlayStep = step;
+}
 function formatResource(value) {
 
     if (value > 0) {
@@ -1760,6 +1775,74 @@ function run() {
 function overlayContinue() {
 
     /* COMBAT → GAINS */
+    if (overlayStep === 300) {
+
+    showOverlay(
+        "🏠 HOME",
+        `
+        You open the door.
+
+        <br><br>
+
+        For a moment,
+        everything is silent.
+        `,
+        301
+    );
+
+    return;
+}
+    if (overlayStep === 301) {
+
+    showOverlay(
+        "❤️ FAMILY",
+        `
+        Then you hear footsteps.
+
+        <br><br>
+
+        Your child runs toward you
+        and hugs you tightly.
+        `,
+        302
+    );
+
+    return;
+}
+    if (overlayStep === 302) {
+
+    showOverlay(
+        "🎉 CONGRATULATIONS",
+        `
+        You made it home.
+
+        <br><br>
+
+        Creator: Felipe Paes ,
+
+        A game for my love Sandy. And our love for games.
+
+        <br><br>
+
+        Thanks for playing. 
+        `,
+        303
+    );
+
+    return;
+}
+    if (overlayStep === 303) {
+
+    location.reload();
+
+    return;
+}
+if (overlayStep === 200) {
+
+    location.reload();
+
+    return;
+}
     if (overlayStep === 1) {
 
         document
@@ -2032,21 +2115,14 @@ document
     .classList
     .remove("hidden");
 
-document
-    .getElementById("overlayText")
-    .innerHTML = `
-        <h2>☀️ DAY ${player.day}</h2>
-
-        <p>
-            Another day on the road.
-        </p>
-
-        <p>
-            Another day closer to home.
-        </p>
-    `;
-
-overlayStep = 50;
+showOverlay(
+    `🌅 DAY ${player.day}`,
+    `
+    Another day on the road.<br><br>
+    Another day closer to home.
+    `,
+    50
+);
 
 return;
 }
@@ -2062,22 +2138,20 @@ return;
 
 function gameOver() {
 
-    alert(
+    console.log("GAME OVER TRIGGERED");
 
-        "You fought bravely...\n\n" +
+    showOverlay(
+        "☠️ YOU DIED",
+        `
+        You fought bravely...
 
-        "But the dead were too many.\n\n" +
+        <br><br>
 
-        "YOU DIED.\n\n" +
-
-        "Your journey ends here."
-
+        But the dead were too many.
+        `,
+        200
     );
-
-
-    location.reload();
 }
-
 
 /* =====================================================
    VICTORY
@@ -2085,75 +2159,20 @@ function gameOver() {
 
 function victory() {
 
-    alert(
+    showOverlay(
+        "🏠 HOME",
+        `
+        After ${MAX_DAYS} days of surviving...
 
-        "You finally made it...\n\n" +
+        <br><br>
 
-        "After " +
-        MAX_DAYS +
-        " days of walking, fighting, " +
-        "running, starving and surviving...\n\n" +
-
-        "You see your home in the distance.\n\n" +
-
-        "You made it home."
-
-    );
-
-
-    alert(
-
-        "You open the door.\n\n" +
-
-        "For a moment, everything is silent.\n\n" +
-
-        "Then you hear footsteps.\n\n" +
-
-        "Your son sees you.\n\n" +
-
-        "He runs toward you, throws his arms " +
-        "around you and hugs you as he cries."
-
-    );
-
-
-    alert(
-
-        "You hold him tightly.\n\n" +
-
-        "For the first time in " +
-        MAX_DAYS +
-        " days, you don't have to run.\n" +
-        "You don't have to fight.\n" +
-        "You don't have to survive.\n\n" +
-
-        "You're home."
-
-    );
-
-
-    alert(
-
-        "Tough times are worth enduring " +
-        "for the people we love."
-
-    );
-
-
-    alert(
-
-        "CONGRATULATIONS ON FINISHING THE GAME\n\n" +
-
-        "CREATOR: FELIPE PAES\n" +
-
-        "TESTER: SANDYNHABIO\n\n" +
-
-        "CREDITS: TO MY LOVE SANDY,\n\n" +
-
-        "AND OUR LOVE FOR ZOMBIE APOCALYPSE <3"
-
+        You finally see your home
+        in the distance.
+        `,
+        300
     );
 }
+
 
 
 /* =====================================================
