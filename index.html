@@ -149,6 +149,32 @@ input {
     width: 80%;
     margin: 15px 0;
 }
+
+
+/* Responsive layout */
+@media (max-width: 560px) {
+    .game {
+        width: 100%;
+        padding: 20px 14px;
+        border-radius: 0;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .overlay-box {
+        padding: 28px 20px;
+    }
+}
 </style>
 </head>
 
@@ -182,18 +208,22 @@ You have only one objective:
 </p>
 
 <p>
-The journey is currently a <strong>10-day test</strong>.
+The journey is currently a <strong>${MAX_DAYS}-day test</strong>.
 </p>
+
+<label for="playerName">Your name</label>
 
 <input
     id="playerName"
     type="text"
     placeholder="Enter your name"
+    autocomplete="name"
+    maxlength="40"
 >
 
 <br>
 
-<button onclick="startGame()">
+<button id="startButton" type="button">
 START GAME
 </button>
 
@@ -247,7 +277,7 @@ Thirst
     class="encounter-title">
 </div>
 
-<div id="encounterText"></div>
+<div id="encounterText" aria-live="polite"></div>
 
 
 <div
@@ -261,14 +291,16 @@ Thirst
 <div class="buttons">
 
 <button
-    class="fight"
-    onclick="fight()">
+    id="fightButton"
+    type="button"
+    class="fight">
 ⚔️ Let's Go!
 </button>
 
 <button
-    class="run"
-    onclick="run()">
+    id="runButton"
+    type="button"
+    class="run">
 🏃 No way!!
 </button>
 
@@ -285,7 +317,7 @@ Thirst
    GAME SETTINGS
 ===================================================== */
 
-const MAX_DAYS = 21;
+const MAX_DAYS = 10;
 
 const ENCOUNTERS_PER_DAY = 3;
 
@@ -314,6 +346,7 @@ let player = {
 
 };
 let overlayStep = 0;
+let currentEncounter = null;
 
 let combatHTML = "";
 
@@ -321,7 +354,7 @@ let gainHTML = "";
 let survivalHTML = "";
 
 /* =====================================================
-   TEMPORARY ENCOUNTER DATABASE
+   ENCOUNTER DATABASE
 =====================================================
 
    IMPORTANT:
@@ -1296,7 +1329,7 @@ function startGame() {
 
 
 /* =====================================================
-   RANDOM ENCOUNTER 1–70
+   RANDOM ENCOUNTER
 ===================================================== */
 
 function newEncounter() {
@@ -1315,31 +1348,16 @@ function newEncounter() {
         Math.floor(Math.random() * 70) + 1;
 
 
-    /*
-       Temporary fallback while the complete
-       70-row table is inserted.
-    */
-
     let encounter =
         encounters.find(
             e => e.id === encounterID
         );
-
-
     if (!encounter) {
-
-        encounter =
-            encounters[
-                Math.floor(
-                    Math.random() *
-                    encounters.length
-                )
-            ];
-
+        throw new Error(`Missing encounter: ${encounterID}`);
     }
 
 
-    window.currentEncounter = encounter;
+    currentEncounter = encounter;
 
 
 
@@ -1368,7 +1386,7 @@ function newEncounter() {
 function fight() {
     document.querySelector(".buttons").style.display = "none";
     const encounter =
-        window.currentEncounter;
+        currentEncounter;
 
     const zombieCombat =
         encounter.zombieCombat;
@@ -1385,19 +1403,17 @@ function fight() {
     */
 
     const playerRandom =
-        Math.floor(Math.random() * 10);
+        Math.floor(Math.random() * 10) + 1;
 
     const zombieRandom =
-        Math.floor(Math.random() * 6);
+        Math.floor(Math.random() * 6) + 1;
 
 
     const playerTotal =
-        player.combat +
         player.combat * playerRandom;
 
 
     const zombieTotal =
-        zombieCombat +
         zombieCombat * zombieRandom;
 
 
@@ -1772,6 +1788,30 @@ function run() {
     overlayStep = 99;
 }
 
+function resetGame() {
+
+    player = {
+        name: "",
+        health: 100,
+        combat: 5,
+        hunger: 0,
+        thirst: 0,
+        day: 1,
+        encounter: 1
+    };
+
+    currentEncounter = null;
+    overlayStep = 0;
+    combatHTML = "";
+    gainHTML = "";
+    survivalHTML = "";
+
+    document.getElementById("overlay").classList.add("hidden");
+    document.getElementById("gameScreen").classList.add("hidden");
+    document.getElementById("startScreen").classList.remove("hidden");
+    document.getElementById("playerName").value = "";
+}
+
 function overlayContinue() {
 
     /* COMBAT → GAINS */
@@ -1833,13 +1873,13 @@ function overlayContinue() {
 }
     if (overlayStep === 303) {
 
-    location.reload();
+    resetGame();
 
     return;
 }
 if (overlayStep === 200) {
 
-    location.reload();
+    resetGame();
 
     return;
 }
@@ -1963,14 +2003,7 @@ if (overlayStep === 200) {
 /* =====================================================
    SURVIVAL EFFECTS
 ===================================================== */
-function formatResource(value) {
 
-    if (value > 0) {
-        return "+" + value;
-    }
-
-    return value;
-}
 function survivalEffects() {
 
     /*
@@ -2249,16 +2282,24 @@ document
 
     <div class="overlay-box">
 
-        <div id="overlayText"></div>
+        <div id="overlayText" aria-live="assertive"></div>
 
         <button
-            class="overlay-button"
-            onclick="overlayContinue()">
+            id="overlayContinueButton"
+            type="button"
+            class="overlay-button">
             CONTINUE
         </button>
 
     </div>
 
 </div>
+
+<script>
+document.getElementById("startButton").addEventListener("click", startGame);
+document.getElementById("fightButton").addEventListener("click", fight);
+document.getElementById("runButton").addEventListener("click", run);
+document.getElementById("overlayContinueButton").addEventListener("click", overlayContinue);
+</script>
 </body>
 </html>
