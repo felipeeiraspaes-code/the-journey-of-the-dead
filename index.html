@@ -175,6 +175,46 @@ input {
         padding: 28px 20px;
     }
 }
+
+
+/* Game artwork */
+#startScreen {
+    position: relative;
+    overflow: hidden;
+    padding: 28px;
+    border-radius: 10px;
+    background-image: linear-gradient(rgba(12, 12, 12, 0.72), rgba(12, 12, 12, 0.88)), url("assets/images/start-background.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+#startScreen > * {
+    position: relative;
+    z-index: 1;
+}
+
+.time-of-day {
+    margin: 18px 0 22px;
+}
+
+.time-of-day img,
+.encounter-image {
+    display: block;
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #444;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.encounter-image {
+    margin-bottom: 20px;
+}
+
+.time-of-day img {
+    height: 130px;
+}
 </style>
 </head>
 
@@ -208,7 +248,7 @@ You have only one objective:
 </p>
 
 <p>
-The journey is currently a <strong>${MAX_DAYS}-day test</strong>.
+The journey is currently a <strong>10-day test</strong>.
 </p>
 
 <label for="playerName">Your name</label>
@@ -237,6 +277,10 @@ START GAME
 <h1>The Journey of the Dead</h1>
 
 <div id="dayDisplay" class="subtitle"></div>
+
+<div class="time-of-day">
+    <img id="timeOfDayImage" src="assets/images/time-morning.jpg" alt="Morning on the road">
+</div>
 
 <div class="stats">
 
@@ -276,6 +320,8 @@ Thirst
     id="encounterTitle"
     class="encounter-title">
 </div>
+
+<img id="encounterImage" class="encounter-image" src="assets/images/encounter-road.jpg" alt="Current encounter">
 
 <div id="encounterText" aria-live="polite"></div>
 
@@ -1292,6 +1338,33 @@ const encounters = [
 
 
 /* =====================================================
+   ARTWORK
+===================================================== */
+
+const timeOfDayImages = {
+    MORNING: "assets/images/time-morning.jpg",
+    AFTERNOON: "assets/images/time-afternoon.jpg",
+    NIGHT: "assets/images/time-night.jpg"
+};
+
+function getEncounterImage(encounter) {
+    const code = encounter.code.toLowerCase();
+
+    if (code.includes("horde")) return "assets/images/encounter-horde.jpg";
+    if (code.includes("woods")) return "assets/images/encounter-woods.jpg";
+    if (code.includes("road")) return "assets/images/encounter-road.jpg";
+    if (code.includes("camp")) return "assets/images/encounter-camp.jpg";
+    if (code.includes("house")) return "assets/images/encounter-house.jpg";
+    if (code.includes("car")) return "assets/images/encounter-car.jpg";
+    if (code.includes("survivor")) return "assets/images/encounter-survivor.jpg";
+    if (code.includes("pharmacy")) return "assets/images/encounter-pharmacy.jpg";
+    if (code.includes("school")) return "assets/images/encounter-school.jpg";
+    if (code.includes("truck")) return "assets/images/encounter-truck.jpg";
+
+    return "assets/images/encounter-road.jpg";
+}
+
+/* =====================================================
    START GAME
 ===================================================== */
 
@@ -1360,6 +1433,12 @@ function newEncounter() {
     currentEncounter = encounter;
 
 
+
+    const encounterImage =
+        document.getElementById("encounterImage");
+
+    encounterImage.src = getEncounterImage(encounter);
+    encounterImage.alt = encounter.description;
 
     document
         .getElementById("encounterText")
@@ -2266,6 +2345,12 @@ const timesOfDay = [
 
 const time =
     timesOfDay[player.encounter - 1];
+
+    const timeImage =
+        document.getElementById("timeOfDayImage");
+
+    timeImage.src = timeOfDayImages[time];
+    timeImage.alt = time + " on the road";
 
 document
     .getElementById("dayDisplay")
