@@ -215,6 +215,24 @@ input {
 .time-of-day img {
     height: 130px;
 }
+
+
+.music-button {
+    display: block;
+    margin: 10px auto 0;
+    padding: 8px 14px;
+    font-size: 13px;
+    background: #292929;
+    color: #ddd;
+    border: 1px solid #555;
+}
+
+.music-button:hover,
+.music-button:focus-visible {
+    background: #3a3a3a;
+    outline: 2px solid #b33;
+    outline-offset: 2px;
+}
 </style>
 </head>
 
@@ -275,6 +293,8 @@ START GAME
 <div id="gameScreen" class="hidden">
 
 <h1 id="playerJourneyTitle">The Journey of the Dead</h1>
+
+<button id="musicButton" type="button" class="music-button" aria-pressed="false">🔇 Music: Off</button>
 
 <div id="dayDisplay" class="subtitle"></div>
 
@@ -1365,6 +1385,90 @@ function getEncounterImage(encounter) {
 }
 
 /* =====================================================
+   AMBIENT MUSIC
+===================================================== */
+
+let musicAudio = null;
+
+function updateMusicButton() {
+    const button = document.getElementById("musicButton");
+    if (!button) return;
+
+    const isPlaying = musicAudio && musicAudio.enabled;
+    button.textContent = isPlaying ? "🔊 Music: On" : "🔇 Music: Off";
+    button.setAttribute("aria-pressed", String(Boolean(isPlaying)));
+}
+
+function createAmbientMusic() {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContext) {
+        const button = document.getElementById("musicButton");
+        button.disabled = true;
+        button.textContent = "Music unavailable";
+        return null;
+    }
+
+    const context = new AudioContext();
+    const master = context.createGain();
+    master.gain.value = 0.045;
+    master.connect(context.destination);
+
+    const drone = context.createOscillator();
+    drone.type = "sine";
+    drone.frequency.value = 73.42;
+    const droneGain = context.createGain();
+    droneGain.gain.value = 0.55;
+    drone.connect(droneGain).connect(master);
+
+    const undertone = context.createOscillator();
+    undertone.type = "triangle";
+    undertone.frequency.value = 110;
+    const undertoneGain = context.createGain();
+    undertoneGain.gain.value = 0.12;
+    undertone.connect(undertoneGain).connect(master);
+
+    const pulse = context.createOscillator();
+    pulse.type = "sine";
+    pulse.frequency.value = 0.08;
+    const pulseGain = context.createGain();
+    pulseGain.gain.value = 0.2;
+    pulse.connect(pulseGain).connect(droneGain.gain);
+
+    drone.start();
+    undertone.start();
+    pulse.start();
+
+    return { context, master, nodes: [drone, undertone, pulse], enabled: false };
+}
+
+async function startMusic() {
+    if (!musicAudio) musicAudio = createAmbientMusic();
+    if (!musicAudio) return;
+
+    await musicAudio.context.resume();
+    musicAudio.enabled = true;
+    updateMusicButton();
+}
+
+async function toggleMusic() {
+    if (!musicAudio) {
+        await startMusic();
+        return;
+    }
+
+    if (musicAudio.enabled) {
+        await musicAudio.context.suspend();
+        musicAudio.enabled = false;
+    } else {
+        await musicAudio.context.resume();
+        musicAudio.enabled = true;
+    }
+
+    updateMusicButton();
+}
+
+/* =====================================================
    START GAME
 ===================================================== */
 
@@ -1384,6 +1488,8 @@ function startGame() {
     }
 
     player.name = name;
+
+    startMusic();
 
     document.getElementById("playerJourneyTitle").textContent = player.name + "'s Journey";
 
@@ -2388,6 +2494,7 @@ document.getElementById("startButton").addEventListener("click", startGame);
 document.getElementById("fightButton").addEventListener("click", fight);
 document.getElementById("runButton").addEventListener("click", run);
 document.getElementById("overlayContinueButton").addEventListener("click", overlayContinue);
+document.getElementById("musicButton").addEventListener("click", toggleMusic);
 </script>
 </body>
 </html>
