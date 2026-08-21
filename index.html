@@ -274,7 +274,7 @@ START GAME
 
 <div id="gameScreen" class="hidden">
 
-<h1>The Journey of the Dead</h1>
+<h1 id="playerJourneyTitle">The Journey of the Dead</h1>
 
 <div id="dayDisplay" class="subtitle"></div>
 
@@ -1385,6 +1385,8 @@ function startGame() {
 
     player.name = name;
 
+    document.getElementById("playerJourneyTitle").textContent = player.name + "'s Journey";
+
     document
         .getElementById("startScreen")
         .classList
@@ -1889,6 +1891,7 @@ function resetGame() {
     document.getElementById("gameScreen").classList.add("hidden");
     document.getElementById("startScreen").classList.remove("hidden");
     document.getElementById("playerName").value = "";
+    document.getElementById("playerJourneyTitle").textContent = "The Journey of the Dead";
 }
 
 function overlayContinue() {
